@@ -7,12 +7,8 @@ const chalk = require("chalk");
 const Client = require("pg-native");
 
 // PG connection setup
-<<<<<<< HEAD
-const connectionString = process.env.DATABASE_URL ||
-=======
 const connectionString =
   process.env.DATABASE_URL ||
->>>>>>> 0b6f9eb2db9937b0340317da66f18ee4abd62d45
   `postgresql://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}?sslmode=disable`;
 const client = new Client();
 
