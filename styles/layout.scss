@@ -1,9 +1,96 @@
 // See: https://sass-lang.com/
 
 body {
-  background-color: #EEE;
+  background-color: rgb(219, 219, 219);
 
   h1 {
     color: #244751;
   }
+}
+main.landing-page {
+  min-height: 100vh;
+  min-width: 1024px;
+  width: 100%;
+  height: auto;
+  background-image: url("https://foodprint.org/wp-content/uploads/2019/05/AdobeStock_162340070.jpg");
+  background-repeat: no-repeat;
+  z-index: 0;
+  opacity: 0.75;
+}
+#nav-brand {
+  color: #000;
+}
+#nav-bar {
+  justify-content: space-between;
+}
+.dropdown {
+  float: right;
+  padding-right: 30px;
+  .dropdown-menu {
+    padding: 20px;
+    top: 30px;
+    width: 350px;
+    left: -210px;
+    box-shadow: 0px 5px 30px black;
+  }
+}
+.btn {
+  border: 0px;
+  margin: 10px 0px;
+  box-shadow: none;
+}
+.total-header-section {
+  border-bottom: 1px solid #d2d2d2;
+}
+.total-section {
+  p {
+    margin-bottom: 20px;
+  }
+}
+.cart-detail {
+  padding: 15px 0px;
+  .price {
+    font-size: 12px;
+    margin-right: 10px;
+    font-weight: 500;
+  }
+  .count {
+    color: #c2c2dc;
+  }
+}
+.cart-detail-img {
+  img {
+    justify-items: auto;
+    width: 100%;
+    height: 70%;
+    padding-left: 15px;
+  }
+}
+.cart-detail-product {
+  p {
+    margin: 0px;
+    color: #000;
+    font-weight: 500;
+  }
+}
+.checkout {
+  border-top: 1px solid #d2d2d2;
+  padding-top: 15px;
+  .btn-primary {
+    border-radius: 50px;
+    height: 50px;
+  }
+}
+.dropdown-menu {
+  &:before {
+    content: " ";
+    position: absolute;
+    top: -20px;
+    right: 50px;
+    border: 10px solid transparent;
+    border-bottom-color: #fff;
+  }
+}
+.card-body:hover {
+  box-shadow: 2px 5px #d2d2d2;
 }
