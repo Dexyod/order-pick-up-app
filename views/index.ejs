@@ -1,26 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Home Page</title>
 
-    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
-    <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
+<head>
+  <title>Home Page</title>
 
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    />
+  <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+  <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
 
-    <!-- <link
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  <!-- <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
       integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
@@ -32,314 +27,412 @@
       crossorigin="anonymous"
     ></script> -->
 
-    <!-- <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script> -->
-    <script type="text/javascript" src="/scripts/app.js"></script>
-  </head>
+  <!-- <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script> -->
+  <script type="text/javascript" src="/scripts/app.js"></script>
+</head>
 
-  <body>
-    <!-- nav bar -->
-    <header>
-      <nav class="navbar navbar-expand-md navbar-dark bg-light">
-        <a class="navbar-brand" id="nav-brand" href="/">Kevin Bacon</a>
-        <a class="navbar-brand" id="nav-brand" href="#menu">Menu</a>
-        <div class="collapse navbar-collapse" id="nav-bar">
-          <div class="navbar-nav">
-            <form
-          class="form-inline"
-          method="GET"
-          action="/"
-          style="padding: 10px;"
-        >
-          <button type="submit" class="btn btn-outline-dark">
+<body>
+  <!-- nav bar -->
+  <header>
+    <nav class="navbar navbar-expand-md navbar-dark bg-light">
+      <a class="navbar-brand" id="nav-brand" href="/">Kevin Bacon</a>
+      <a class="navbar-brand" id="nav-brand" href="#menu">Menu</a>
+      <div class="collapse navbar-collapse" id="nav-bar">
+        <div class="navbar-nav">
+          <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#ModalRegister">
             Register
           </button>
-        </form>
-        <form class="form-inline" method="GET" action="/login">
-          <button type="submit" class="btn btn-outline-dark">Login</button>
-        </form>
+          <!-- Modal Register Markup -->
+          <div id="ModalRegister" class="modal fade">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title text-xs-center">Sign-Up</h4>
+                </div>
+                <div class="modal-body">
+                  <form role="form" method="POST" action="">
+                    <input type="hidden" name="_token" value="">
+                    <div class="form-group">
+                      <label class="control-label">Username</label>
+                      <div>
+                        <input type="text" class="form-control input-lg" name="username" value="">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label">E-Mail Address</label>
+                      <div>
+                        <input type="email" class="form-control input-lg" name="email" value="">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label">Password</label>
+                      <div>
+                        <input type="password" class="form-control input-lg" name="password">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label">Phone Number</label>
+                      <div>
+                        <input type="password" class="form-control input-lg" name="password">
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+          </div><!-- /.modal -->
         </div>
-        <div class="dropdown" id="cart">
-          <button
-            type="button"
-            class="btn btn-outline-dark"
-            data-toggle="dropdown"
-          >
-            <i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart
-            <span class="badge badge-pill badge-danger">3</span>
-          </button>
-              <div class="dropdown-menu">
-                <div class="row total-header-section">
-                  <div class="col-lg-6 col-sm-6 col-6">
-                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                    <span class="badge badge-pill badge-danger">3</span>
+        <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#ModalLogin">
+          Login
+        </button>
+        <!-- Modal Login Markup -->
+        <div id="ModalLogin" class="modal fade">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title text-xs-center">Log in like a Boss</h4>
+              </div>
+              <div class="modal-body">
+                <form role="form" method="POST" action="">
+                  <input type="hidden" name="_token" value="">
+                  <div class="form-group">
+                    <label class="control-label">E-Mail Address</label>
+                    <div>
+                      <input type="email" class="form-control input-lg" name="email" value="">
+                    </div>
                   </div>
-                  <div
-                  class="col-lg-6 col-sm-6 col-6 total-section text-right"
-                  >
-                  <p>Total: <span class="text-info">$38.62</span></p>
-                </div>
-                <div class="row cart-detail">
-                  <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
-                    <img
-                    src="https://images.freeimages.com/images/large-previews/adb/food-1322804.jpg"
-                    />
+                  <div class="form-group">
+                    <label class="control-label">Password</label>
+                    <div>
+                      <input type="password" class="form-control input-lg" name="password">
+                    </div>
                   </div>
-                  <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                    <p>Fries</p>
-                    <span class="price text-info"> $5.22</span>
-                    <span class="count"> Quantity:01</span>
-                    <button type="button" class="btn btn-primary">Checkout</button>
+                  <div class="form-group">
+                    <div>
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" name="remember"> Remember Me
+                        </label>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                  <div class="form-group">
+                    <div>
+                      <a class="btn btn-link" href="">Forgot Your Password?</a>
+                      <button type="submit" class="btn btn-info btn-block">Login</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer text-xs-center">
+                Don't have an account? <a href="/auth/register">Sign up »</a>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+      </div>
+
+
+      <div class="dropdown" id="cart">
+        <button type="button" class="btn btn-outline-dark" data-toggle="dropdown">
+          <i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart
+          <span class="badge badge-pill badge-danger">3</span>
+        </button>
+        <div class="dropdown-menu">
+          <div class="row total-header-section">
+            <div class="col-lg-6 col-sm-6 col-6">
+              <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+              <span class="badge badge-pill badge-danger">3</span>
+            </div>
+            <div class="col-lg-6 col-sm-6 col-6 total-section text-right">
+              <p>Total: <span class="text-info">$38.62</span></p>
+            </div>
+            <div class="row cart-detail">
+              <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
+                <img src="https://images.freeimages.com/images/large-previews/adb/food-1322804.jpg" />
+              </div>
+              <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
+                <p>Fries</p>
+                <span class="price text-info"> $5.22</span>
+                <span class="count"> Quantity:01</span>
+                <button type="button" class="btn btn-primary">Checkout</button>
               </div>
             </div>
           </div>
         </div>
       </div>
+      </div>
+      </div>
     </nav>
-    </header>
-    <!-- add another container here -->
-    <main class="landing-page">
 
-    </main>
-    <div class="container py-5" id="menu">
-      <div class="row">
-        <div class="col-lg-10 mx-auto col-12 text-center mb-3">
-          <h1 class="mt-0 text-primary">Our Menu</h1>
-          <p class="lead">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum
-            cupiditate nostrum impedit minus corporis. Exercitationem nesciunt
-            excepturi dolorem est sint, cumque sed enim corporis ab, omnis
-            neque, sit vitae iure.
+  </header>
+  <!-- add another container here -->
+  <main class="landing-page">
+
+  </main>
+  <div class="container py-5" id="menu">
+    <div class="row">
+      <div class="col-lg-10 mx-auto col-12 text-center mb-3">
+        <h1 class="mt-0 text-primary">Our Menu</h1>
+        <p class="lead">
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum
+          cupiditate nostrum impedit minus corporis. Exercitationem nesciunt
+          excepturi dolorem est sint, cumque sed enim corporis ab, omnis
+          neque, sit vitae iure.
+        </p>
+      </div>
+      <div class="col-12 mt-4">
+        <h3 class="text-center">Starters</h3>
+        <hr class="accent my-5" />
+      </div>
+      <div class="card-columns">
+        <div class="card card-body">
+          <span class="float-right font-weight-bold">$9.95</span>
+          <h6 class="text-truncate">Fried Shrimp</h6>
+          <img src="https://spicysouthernkitchen.com/wp-content/uploads/Fried-Shrimp-4.jpg" alt=""
+            class="img-thumbnail">
+          <p class="small">
+            Sustainably raised Argentine red shrimp, fried golden brown and
+            served with chipotle mayonnaise for dipping.
+          </p>
+          <span class="font-weight-bold small">Add marinara or tartar: $2</span>
+          <div class="qty mt-5">
+            <span class="minus bg-outline-primary">-</span>
+            <input type="number" class="count" name="qty" value="1">
+            <span class="plus bg-outline-primary">+</span>
+          </div>
+        </div>
+        <div class="card card-body">
+          <span class="float-right font-weight-bold">$8.95</span>
+          <h6 class="text-truncate">Tuscan Bruschetta</h6>
+          <img src="https://spicysouthernkitchen.com/wp-content/uploads/Fried-Shrimp-4.jpg" alt=""
+            class="img-thumbnail">
+          <p class="small">
+            Crusty sliced Italian bread topped with basil, extra virgin olive
+            oil, chopped tomatoes, garlic and fresh mozzarella cheese. Baked
+            until it is nice and crispy and served with a side of balsamic
+            reduction.
           </p>
         </div>
-        <div class="col-12 mt-4">
-          <h3 class="text-center">Starters</h3>
-          <hr class="accent my-5" />
+        <div class="card card-body">
+          <span class="float-right font-weight-bold">$7.95</span>
+          <h6 class="text-truncate">Quesadilla</h6>
+          <img src="https://spicysouthernkitchen.com/wp-content/uploads/Fried-Shrimp-4.jpg" alt=""
+            class="img-thumbnail">
+          <p class="small">
+            Jack and cheddar cheese, chopped mild green chilies in a pan
+            grilled flour tortilla. Served with sour cream, guacamole and
+            fresh pico de gallo.
+          </p>
+          <div class="font-weight-bold small">Add BBQ Pulled Pork: $2</div>
         </div>
-        <div class="card-columns">
-          <div class="card card-body">
-            <span class="float-right font-weight-bold">$9.95</span>
-            <h6 class="text-truncate">Fried Shrimp</h6>
-            <img src="https://spicysouthernkitchen.com/wp-content/uploads/Fried-Shrimp-4.jpg" alt="" class="img-thumbnail">
-            <p class="small">
-              Sustainably raised Argentine red shrimp, fried golden brown and
-              served with chipotle mayonnaise for dipping.
-            </p>
-            <span class="font-weight-bold small"
-              >Add marinara or tartar: $2</span
-            >
-            <div class="qty mt-5">
-              <span class="minus bg-outline-primary">-</span>
-              <input type="number" class="count" name="qty" value="1">
-              <span class="plus bg-outline-primary">+</span>
-          </div>
-          </div>
-          <div class="card card-body">
-            <span class="float-right font-weight-bold">$8.95</span>
-            <h6 class="text-truncate">Tuscan Bruschetta</h6>
-            <img src="https://spicysouthernkitchen.com/wp-content/uploads/Fried-Shrimp-4.jpg" alt="" class="img-thumbnail">
-            <p class="small">
-              Crusty sliced Italian bread topped with basil, extra virgin olive
-              oil, chopped tomatoes, garlic and fresh mozzarella cheese. Baked
-              until it is nice and crispy and served with a side of balsamic
-              reduction.
-            </p>
-          </div>
-          <div class="card card-body">
-            <span class="float-right font-weight-bold">$7.95</span>
-            <h6 class="text-truncate">Quesadilla</h6>
-            <img src="https://spicysouthernkitchen.com/wp-content/uploads/Fried-Shrimp-4.jpg" alt="" class="img-thumbnail">
-            <p class="small">
-              Jack and cheddar cheese, chopped mild green chilies in a pan
-              grilled flour tortilla. Served with sour cream, guacamole and
-              fresh pico de gallo.
-            </p>
-            <div class="font-weight-bold small">Add BBQ Pulled Pork: $2</div>
-          </div>
-          <div class="card card-body">
-            <span class="float-right font-weight-bold">$9.95</span>
-            <h6 class="text-truncate">Wings</h6>
-            <img src="https://spicysouthernkitchen.com/wp-content/uploads/Fried-Shrimp-4.jpg" alt="" class="img-thumbnail">
-            <p class="small">
-              A dozen of our crispy, tasty chicken wings. Select 1 of our 4
-              seasonings.
-            </p>
-            <div class="font-weight-bold small">Classic Sweet BBQ</div>
-            <div class="font-weight-bold small">Hot Buffalo Sauce</div>
-          </div>
-          <div class="card card-body">
-            <span class="float-right font-weight-bold">$8.95</span>
-            <h6 class="text-truncate">Ultimate Nacho Platter</h6>
-            <img src="https://spicysouthernkitchen.com/wp-content/uploads/Fried-Shrimp-4.jpg" alt="" class="img-thumbnail">
-            <p class="small">
-              House made corn tortilla chips, melted cheddar-Jack cheese, mild
-              Anaheim chile salsa, refried beans, guacamole &amp; sour cream
-            </p>
-          </div>
-          <div class="card card-body">
-            <span class="float-right font-weight-bold">$10</span>
-            <h6 class="text-truncate">Stuffed Clams</h6>
-            <img src="https://spicysouthernkitchen.com/wp-content/uploads/Fried-Shrimp-4.jpg" alt="" class="img-thumbnail">
-            <p class="small">
-              Three large stuffies with chopped clams, medium spiced chouriço
-              Portuguese sausage, chopped bacon, onions, peppers, a touch of
-              crushed red pepper, bread crumbs and spices, topped with bacon.
-            </p>
-          </div>
+        <div class="card card-body">
+          <span class="float-right font-weight-bold">$9.95</span>
+          <h6 class="text-truncate">Wings</h6>
+          <img src="https://spicysouthernkitchen.com/wp-content/uploads/Fried-Shrimp-4.jpg" alt=""
+            class="img-thumbnail">
+          <p class="small">
+            A dozen of our crispy, tasty chicken wings. Select 1 of our 4
+            seasonings.
+          </p>
+          <div class="font-weight-bold small">Classic Sweet BBQ</div>
+          <div class="font-weight-bold small">Hot Buffalo Sauce</div>
         </div>
-        <div class="col-12 mt-4">
-          <h3 class="text-center">Main Plates</h3>
-          <hr class="accent my-5" />
+        <div class="card card-body">
+          <span class="float-right font-weight-bold">$8.95</span>
+          <h6 class="text-truncate">Ultimate Nacho Platter</h6>
+          <img src="https://spicysouthernkitchen.com/wp-content/uploads/Fried-Shrimp-4.jpg" alt=""
+            class="img-thumbnail">
+          <p class="small">
+            House made corn tortilla chips, melted cheddar-Jack cheese, mild
+            Anaheim chile salsa, refried beans, guacamole &amp; sour cream
+          </p>
         </div>
-        <div class="card-columns">
-          <div class="card card-body">
-            <span class="float-right font-weight-bold">$17.95</span>
-            <h6 class="text-underline">Fat Tuesday Salad</h6>
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSUCGs__1XNJhVRn4Ax7uYsa4NKQZ2FxCuUsg&usqp=CAU" alt="" class="img-thumbnail">
-            <p class="small">
-              New Orleans style hot sliced Cajun chicken breast with mixed
-              greens, tomatoes, cucumbers and hard-cooked eggs with warm, spicy
-              honey mustard dressing topped with crumbled bacon..
-            </p>
-            <span class="font-weight-bold small"></span>
-          </div>
-          <div class="card card-body">
-            <span class="float-right font-weight-bold">$25.95</span>
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSUCGs__1XNJhVRn4Ax7uYsa4NKQZ2FxCuUsg&usqp=CAU" alt="" class="img-thumbnail">
-            <h6>Braised Boneless Beef Short Ribs</h6>
-            <p class="small">
-              Braised low and slow, resulting in meat that is deeply flavored,
-              sublimely succulent and tender as can be imagined, yet maintaining
-              a wonderful texture. Served on a bed of garlic smashed potatoes.
-              Served with choice of additional side.
-            </p>
-          </div>
-          <div class="card card-body">
-            <span class="float-right font-weight-bold">$15.95</span>
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSUCGs__1XNJhVRn4Ax7uYsa4NKQZ2FxCuUsg&usqp=CAU" alt="" class="img-thumbnail">
-            <h6>Jambalaya</h6>
-            <p class="small">
-              Shrimp, chicken, andouille sausage, rice and traditional jambalaya
-              vegetables and spices. Garnished with sweet red and yellow pepper
-              confetti.
-            </p>
-          </div>
-          <div class="card card-body">
-            <span class="float-right font-weight-bold">$12.95</span>
-            <h6>Stuffed Jumbo Shrimp</h6>
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSUCGs__1XNJhVRn4Ax7uYsa4NKQZ2FxCuUsg&usqp=CAU" alt="" class="img-thumbnail">
-            <p class="small">
-              Crabmeat, chopped scallops, mushrooms, Jack cheese, seasoned bread
-              crumbs, white wine and butter stuffing.
-            </p>
-          </div>
-          <div class="card card-body">
-            <span class="float-right font-weight-bold">$25.95</span>
-            <h6>Sirloin Steak Tips</h6>
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSUCGs__1XNJhVRn4Ax7uYsa4NKQZ2FxCuUsg&usqp=CAU" alt="" class="img-thumbnail">
-            <p class="small">
-              Chunks of tender, flavorful marinated sirloin sautéed with garlic
-              and black pepper, finished with button mushrooms and a beef
-              demi-glace. (Degree of doneness will vary slightly due to
-              variations in size of chunks). Accompanied by Gorgonzola spiked
-              garlic smashed potatoes. Served with choice of additional side.
-            </p>
-          </div>
-          <div class="card card-body">
-            <span class="float-right font-weight-bold">$14.95</span>
-            <h6>Pasta Pomodoro</h6>
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSUCGs__1XNJhVRn4Ax7uYsa4NKQZ2FxCuUsg&usqp=CAU" alt="" class="img-thumbnail">
-            <p class="small">
-              Fresh roasted garlic rigatoni with a light sauce of extra virgin
-              California olive oil, fresh chopped tomatoes, basil, garlic, black
-              pepper and a dash of crushed red pepper. Garnished with sun dried
-              tomatoes and shaved parmesan.
-            </p>
-          </div>
+        <div class="card card-body">
+          <span class="float-right font-weight-bold">$10</span>
+          <h6 class="text-truncate">Stuffed Clams</h6>
+          <img src="https://spicysouthernkitchen.com/wp-content/uploads/Fried-Shrimp-4.jpg" alt=""
+            class="img-thumbnail">
+          <p class="small">
+            Three large stuffies with chopped clams, medium spiced chouriço
+            Portuguese sausage, chopped bacon, onions, peppers, a touch of
+            crushed red pepper, bread crumbs and spices, topped with bacon.
+          </p>
         </div>
-        <div class="col-12 mt-4">
-          <hr class="accent my-5" />
+      </div>
+      <div class="col-12 mt-4">
+        <h3 class="text-center">Main Plates</h3>
+        <hr class="accent my-5" />
+      </div>
+      <div class="card-columns">
+        <div class="card card-body">
+          <span class="float-right font-weight-bold">$17.95</span>
+          <h6 class="text-underline">Fat Tuesday Salad</h6>
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSUCGs__1XNJhVRn4Ax7uYsa4NKQZ2FxCuUsg&usqp=CAU"
+            alt="" class="img-thumbnail">
+          <p class="small">
+            New Orleans style hot sliced Cajun chicken breast with mixed
+            greens, tomatoes, cucumbers and hard-cooked eggs with warm, spicy
+            honey mustard dressing topped with crumbled bacon..
+          </p>
+          <span class="font-weight-bold small"></span>
         </div>
-        <div class="col-6 mx-auto">
-          <div class="card card-body text-center">
-            <h5 class="text-uppercase">Maybe Previous Orders Here!</h5>
-            <h6>Pasta Pomodoro</h6>
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSUCGs__1XNJhVRn4Ax7uYsa4NKQZ2FxCuUsg&usqp=CAU" alt="" class="img-thumbnail">
-            <p class="small">
-              Fresh roasted garlic rigatoni with a light sauce of extra virgin
-              California olive oil, fresh chopped tomatoes, basil, garlic, black
-              pepper and a dash of crushed red pepper. Garnished with sun dried
-              tomatoes and shaved parmesan.
-            </p>
-            <span class="float-right font-weight-bold">$14.65</span>
-          </div>
+        <div class="card card-body">
+          <span class="float-right font-weight-bold">$25.95</span>
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSUCGs__1XNJhVRn4Ax7uYsa4NKQZ2FxCuUsg&usqp=CAU"
+            alt="" class="img-thumbnail">
+          <h6>Braised Boneless Beef Short Ribs</h6>
+          <p class="small">
+            Braised low and slow, resulting in meat that is deeply flavored,
+            sublimely succulent and tender as can be imagined, yet maintaining
+            a wonderful texture. Served on a bed of garlic smashed potatoes.
+            Served with choice of additional side.
+          </p>
         </div>
-        <div class="col-12 mt-4">
-          <h3 class="text-center">Drinks</h3>
-          <hr class="accent my-5" />
+        <div class="card card-body">
+          <span class="float-right font-weight-bold">$15.95</span>
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSUCGs__1XNJhVRn4Ax7uYsa4NKQZ2FxCuUsg&usqp=CAU"
+            alt="" class="img-thumbnail">
+          <h6>Jambalaya</h6>
+          <p class="small">
+            Shrimp, chicken, andouille sausage, rice and traditional jambalaya
+            vegetables and spices. Garnished with sweet red and yellow pepper
+            confetti.
+          </p>
         </div>
-        <div class="card-columns">
-          <div class="card card-body">
-            <span class="float-right font-weight-bold">$10</span>
-            <h6 class="text-truncate">Chocolate Martini</h6>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Flaming_cocktails.jpg" alt="" class="img-thumbnail">
-            <p class="small">
-              Tito's Vodka and White Créme de Cacao dusted with hand shaved
-              chocolate.
-            </p>
-          </div>
-          <div class="card card-body">
-            <span class="float-right font-weight-bold">$9</span>
-            <h6 class="text-truncate">Summer Breeze Martini</h6>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Flaming_cocktails.jpg" alt="" class="img-thumbnail">
-            <p class="small">
-              Hendrick’s Gin, St. Germain Elderflower Liqueur and Brancot
-              Sauvignon Blanc with a floater of Cristalino Cava Brut.
-            </p>
-          </div>
-          <div class="card card-body">
-            <span class="float-right font-weight-bold">$9</span>
-            <h6 class="text-truncate">Sweet Heat Margarita</h6>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Flaming_cocktails.jpg" alt="" class="img-thumbnail">
-            <p class="small">
-              Jalapeño infused tequila, triple sec, pineapple juice, lime.
-            </p>
-          </div>
-          <div class="card card-body">
-            <span class="float-right font-weight-bold">$10</span>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Flaming_cocktails.jpg" alt="" class="img-thumbnail">
-            <h6 class="text-truncate">Prickly Pear</h6>
-            <p class="small">
-              New Amsterdam Vodka and Pear liquer in a sugar rimmed glass.
-            </p>
-          </div>
-          <div class="card card-body">
-            <span class="float-right font-weight-bold">$9</span>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Flaming_cocktails.jpg" alt="" class="img-thumbnail">
-            <h6>Classic Martini</h6>
-            <p class="small">
-              Seagrams Gin, Dry Vermouth, pickle juice, olive juice.
-            </p>
-          </div>
-          <div class="card card-body">
-            <span class="float-right font-weight-bold">$10</span>
-            <h6 class="text-truncate">Ruby Red Rosemary Refresher</h6>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Flaming_cocktails.jpg" alt="" class="img-thumbnail">
-            <p class="small">
-              House infused rosemary vodka, St. Germaine Elderflower liqueur,
-              grapefruit juice and a splash of soda.
-            </p>
-          </div>
+        <div class="card card-body">
+          <span class="float-right font-weight-bold">$12.95</span>
+          <h6>Stuffed Jumbo Shrimp</h6>
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSUCGs__1XNJhVRn4Ax7uYsa4NKQZ2FxCuUsg&usqp=CAU"
+            alt="" class="img-thumbnail">
+          <p class="small">
+            Crabmeat, chopped scallops, mushrooms, Jack cheese, seasoned bread
+            crumbs, white wine and butter stuffing.
+          </p>
         </div>
+        <div class="card card-body">
+          <span class="float-right font-weight-bold">$25.95</span>
+          <h6>Sirloin Steak Tips</h6>
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSUCGs__1XNJhVRn4Ax7uYsa4NKQZ2FxCuUsg&usqp=CAU"
+            alt="" class="img-thumbnail">
+          <p class="small">
+            Chunks of tender, flavorful marinated sirloin sautéed with garlic
+            and black pepper, finished with button mushrooms and a beef
+            demi-glace. (Degree of doneness will vary slightly due to
+            variations in size of chunks). Accompanied by Gorgonzola spiked
+            garlic smashed potatoes. Served with choice of additional side.
+          </p>
+        </div>
+        <div class="card card-body">
+          <span class="float-right font-weight-bold">$14.95</span>
+          <h6>Pasta Pomodoro</h6>
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSUCGs__1XNJhVRn4Ax7uYsa4NKQZ2FxCuUsg&usqp=CAU"
+            alt="" class="img-thumbnail">
+          <p class="small">
+            Fresh roasted garlic rigatoni with a light sauce of extra virgin
+            California olive oil, fresh chopped tomatoes, basil, garlic, black
+            pepper and a dash of crushed red pepper. Garnished with sun dried
+            tomatoes and shaved parmesan.
+          </p>
+        </div>
+      </div>
+      <div class="col-12 mt-4">
+        <hr class="accent my-5" />
+      </div>
+      <div class="col-6 mx-auto">
+        <div class="card card-body text-center">
+          <h5 class="text-uppercase">Maybe Previous Orders Here!</h5>
+          <h6>Pasta Pomodoro</h6>
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSUCGs__1XNJhVRn4Ax7uYsa4NKQZ2FxCuUsg&usqp=CAU"
+            alt="" class="img-thumbnail">
+          <p class="small">
+            Fresh roasted garlic rigatoni with a light sauce of extra virgin
+            California olive oil, fresh chopped tomatoes, basil, garlic, black
+            pepper and a dash of crushed red pepper. Garnished with sun dried
+            tomatoes and shaved parmesan.
+          </p>
+          <span class="float-right font-weight-bold">$14.65</span>
+        </div>
+      </div>
+      <div class="col-12 mt-4">
+        <h3 class="text-center">Drinks</h3>
+        <hr class="accent my-5" />
+      </div>
+      <div class="card-columns">
+        <div class="card card-body">
+          <span class="float-right font-weight-bold">$10</span>
+          <h6 class="text-truncate">Chocolate Martini</h6>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Flaming_cocktails.jpg" alt=""
+            class="img-thumbnail">
+          <p class="small">
+            Tito's Vodka and White Créme de Cacao dusted with hand shaved
+            chocolate.
+          </p>
+        </div>
+        <div class="card card-body">
+          <span class="float-right font-weight-bold">$9</span>
+          <h6 class="text-truncate">Summer Breeze Martini</h6>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Flaming_cocktails.jpg" alt=""
+            class="img-thumbnail">
+          <p class="small">
+            Hendrick’s Gin, St. Germain Elderflower Liqueur and Brancot
+            Sauvignon Blanc with a floater of Cristalino Cava Brut.
+          </p>
+        </div>
+        <div class="card card-body">
+          <span class="float-right font-weight-bold">$9</span>
+          <h6 class="text-truncate">Sweet Heat Margarita</h6>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Flaming_cocktails.jpg" alt=""
+            class="img-thumbnail">
+          <p class="small">
+            Jalapeño infused tequila, triple sec, pineapple juice, lime.
+          </p>
+        </div>
+        <div class="card card-body">
+          <span class="float-right font-weight-bold">$10</span>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Flaming_cocktails.jpg" alt=""
+            class="img-thumbnail">
+          <h6 class="text-truncate">Prickly Pear</h6>
+          <p class="small">
+            New Amsterdam Vodka and Pear liquer in a sugar rimmed glass.
+          </p>
+        </div>
+        <div class="card card-body">
+          <span class="float-right font-weight-bold">$9</span>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Flaming_cocktails.jpg" alt=""
+            class="img-thumbnail">
+          <h6>Classic Martini</h6>
+          <p class="small">
+            Seagrams Gin, Dry Vermouth, pickle juice, olive juice.
+          </p>
+        </div>
+        <div class="card card-body">
+          <span class="float-right font-weight-bold">$10</span>
+          <h6 class="text-truncate">Ruby Red Rosemary Refresher</h6>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Flaming_cocktails.jpg" alt=""
+            class="img-thumbnail">
+          <p class="small">
+            House infused rosemary vodka, St. Germaine Elderflower liqueur,
+            grapefruit juice and a splash of soda.
+          </p>
+        </div>
+      </div>
 
-        <div class="col-12 mt-5 border border-right-0 border-left-0">
-          <div class="row">
-            <div class="col h5">Food App</div>
-            <div class="col h5 text-right">Contact Us</div>
-          </div>
+      <div class="col-12 mt-5 border border-right-0 border-left-0">
+        <div class="row">
+          <div class="col h5">Food App</div>
+          <div class="col h5 text-right">Contact Us</div>
         </div>
       </div>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>
