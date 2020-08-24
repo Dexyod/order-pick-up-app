@@ -7,8 +7,12 @@
 
 const express = require('express');
 const router  = express.Router();
+const bcrypt = require('bcrypt');
+const dbHelper = require("../helpers/dbHelper.js");
 
 module.exports = (db) => {
+  dbHelper.setDbConn(db);
+
   router.get("/", (req, res) => {
     let query = `SELECT * FROM widgets`;
     console.log(query);
