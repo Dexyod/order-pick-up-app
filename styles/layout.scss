@@ -48,32 +48,7 @@ main.landing-page {
     margin-bottom: 20px;
   }
 }
-.cart-detail {
-  padding: 15px 0px;
-  .price {
-    font-size: 12px;
-    margin-right: 10px;
-    font-weight: 500;
-  }
-  .count {
-    color: #c2c2dc;
-  }
-}
-.cart-detail-img {
-  img {
-    justify-items: auto;
-    width: 70%;
-    height: 50%;
-    padding-left: 15px;
-  }
-}
-.cart-detail-product {
-  p {
-    margin: 0px;
-    color: #000;
-    font-weight: 500;
-  }
-}
+
 .checkout {
   border-top: 1px solid #d2d2d2;
   padding-top: 15px;
@@ -98,4 +73,43 @@ main.landing-page {
 
 html {
   scroll-behavior: smooth;
+}
+
+.container {
+  padding: 2rem 0rem;
+}
+
+.table-image {
+
+  thead {
+    td, th {
+      border: 0;
+      color: #666;
+      font-size: 0.8rem;
+    }
+  }
+
+  td, th {
+    vertical-align: middle;
+    text-align: center;
+
+    &.qty {
+      max-width: 2rem;
+    }
+  }
+}
+
+.price {
+  margin-left: 1rem;
+}
+
+.modal-footer {
+  padding-top: 0rem;
+}
+
+.cart-total {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  text-align: right;
 }
