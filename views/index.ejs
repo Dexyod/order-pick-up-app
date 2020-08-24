@@ -3,7 +3,7 @@
 
 <head>
   <title>Home Page</title>
-
+  <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
   <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
   <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
@@ -170,16 +170,10 @@
           <h6 class="text-truncate">Fried Shrimp</h6>
           <img src="https://spicysouthernkitchen.com/wp-content/uploads/Fried-Shrimp-4.jpg" alt=""
             class="img-thumbnail">
-          <p class="small">
+          <p class="small item-description">
             Sustainably raised Argentine red shrimp, fried golden brown and
             served with chipotle mayonnaise for dipping.
           </p>
-          <span class="font-weight-bold small">Add marinara or tartar: $2</span>
-          <div class="qty mt-5">
-            <span class="minus bg-outline-primary">-</span>
-            <input type="number" class="count" name="qty" value="1">
-            <span class="plus bg-outline-primary">+</span>
-          </div>
         </div>
         <div class="card card-body">
           <span class="float-right font-weight-bold">$8.95</span>
@@ -324,22 +318,6 @@
       <div class="col-12 mt-4">
         <hr class="accent my-5" />
       </div>
-      <div class="col-6 mx-auto">
-        <div class="card card-body text-center">
-          <h5 class="text-uppercase">Maybe Previous Orders Here!</h5>
-          <h6>Pasta Pomodoro</h6>
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSUCGs__1XNJhVRn4Ax7uYsa4NKQZ2FxCuUsg&usqp=CAU"
-            alt="" class="img-thumbnail">
-          <p class="small">
-            Fresh roasted garlic rigatoni with a light sauce of extra virgin
-            California olive oil, fresh chopped tomatoes, basil, garlic, black
-            pepper and a dash of crushed red pepper. Garnished with sun dried
-            tomatoes and shaved parmesan.
-          </p>
-          <span class="float-right font-weight-bold">$14.65</span>
-        </div>
-      </div>
       <div class="col-12 mt-4">
         <h3 class="text-center">Drinks</h3>
         <hr class="accent my-5" />
@@ -433,7 +411,7 @@
                 <th scope="col">Price</th>
                 <th scope="col">Qty</th>
                 <th scope="col">Total</th>
-                <th scope="col">Actions</th>
+                <th scope="col">Remove</th>
               </tr>
             </thead>
             <tbody>
@@ -442,11 +420,11 @@
                   <img src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/vans.png"
                     class="img-fluid img-thumbnail" alt="Sheep">
                 </td>
-                <td>Vans Sk8-Hi MTE Shoes</td>
-                <td>$89</td>
-                <td class="qty"><input type="text" class="form-control" id="input1" value="2"></td>
-                <td>$178</td>
-                <td>
+                <td style="padding-top: 60px;">Vans Sk8-Hi MTE Shoes</td>
+                <td style="padding-top: 60px;">$89</td>
+                <td style="padding-top: 54px;" class="qty table-padding"><input type="text" class="form-control" id="input1" value="2"></td>
+                <td style="padding-top: 60px;">$178</td>
+                <td style="padding-top: 47 px;">
                   <a href="#" class="btn btn-danger btn-sm">
                     <i class="fa fa-times"></i>
                   </a>
@@ -455,9 +433,30 @@
             </tbody>
           </table>
           <div class="cart-total">
-            <h5>SubTotal: <span class="price text-success">$89</span></h5>
-            <h5>Fees & Taxes: <span class="price text-success">$5</span></h5>
-            <h5>Total: <span class="price text-success">$94</span></h5>
+            <div class="row">
+              <div class="col-10">
+                <h5>SubTotal: </h5>
+              </div>
+              <div class="col-2">
+                <div class="text-success">$89.00</div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-10">
+                <h5>Fees & Taxes: </h5>
+              </div>
+              <div class="col-2">
+                <div class="text-success">$10000.00</div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-10">
+                <h5>Total: </h5>
+              </div>
+              <div class="col-2">
+                <div class="text-success">$94.00</div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="modal-footer border-top-0 d-flex justify-content-between">

@@ -1,8 +1,11 @@
 // See: https://sass-lang.com/
+* {
+  font-family: 'Lobster', cursive;
+  letter-spacing: 1px;
+}
 
 body {
   background-color: rgb(219, 219, 219);
-
   h1 {
     color: #244751;
   }
@@ -66,16 +69,7 @@ main.landing-page {
     height: 50px;
   }
 }
-.dropdown-menu {
-  &:before {
-    content: " ";
-    position: absolute;
-    top: -20px;
-    right: 50px;
-    border: 10px solid transparent;
-    border-bottom-color: #fff;
-  }
-}
+
 .card-body:hover {
   box-shadow: 2px 5px #d2d2d2;
 }
@@ -108,10 +102,6 @@ html {
   }
 }
 
-.price {
-  margin-left: 1rem;
-}
-
 .modal-footer {
   padding-top: 0rem;
 }
@@ -121,4 +111,12 @@ html {
   flex-direction: column;
   justify-content: end;
   text-align: right;
+}
+
+.item-description {
+  margin-top: 10px;
+  text-align: center;
+  border: 1px solid #dee2e6;
+  border-radius: 10%;
+  padding: 5px;
 }
