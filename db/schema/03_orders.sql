@@ -9,8 +9,7 @@ CREATE TABLE orders (
   comment VARCHAR(255),
   order_date DATE NOT NULL, /* this is set to the date when the user click submit on the page. */
   start_time TIMESTAMP NOT NULL, /* this time starts when the use click submit on the page */
-  end_time TIMESTAMP NOT NULL, /* should be set once the order is completed/delivered */
-  active BOOLEAN NOT NULL DEFAULT TRUE
+  end_time TIMESTAMP NOT NULL /* should be set once the order is completed/delivered */
 );
 
 CREATE TABLE order_details (
