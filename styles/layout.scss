@@ -24,17 +24,7 @@ main.landing-page {
 #nav-bar {
   justify-content: space-between;
 }
-.dropdown {
-  float: right;
-  padding-right: 30px;
-  .dropdown-menu {
-    padding: 20px;
-    top: 30px;
-    width: 350px;
-    left: -210px;
-    box-shadow: 0px 5px 30px black;
-  }
-}
+
 .btn {
   border: 0px;
   margin: 10px 0px;
