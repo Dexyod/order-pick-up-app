@@ -134,38 +134,18 @@
 
 
       <div class="dropdown" id="cart">
-        <button type="button" class="btn btn-outline-dark" data-toggle="dropdown">
+        <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#ModalCart">
           <i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart
           <span class="badge badge-pill badge-danger">3</span>
         </button>
-        <div class="dropdown-menu">
-          <div class="row total-header-section">
-            <div class="col-lg-6 col-sm-6 col-6">
-              <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-              <span class="badge badge-pill badge-danger">3</span>
-            </div>
-            <div class="col-lg-6 col-sm-6 col-6 total-section text-right">
-              <p>Total: <span class="text-info">$38.62</span></p>
-            </div>
-            <div class="row cart-detail">
-              <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
-                <img src="https://images.freeimages.com/images/large-previews/adb/food-1322804.jpg" />
-              </div>
-              <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                <p>Fries</p>
-                <span class="price text-info"> $5.22</span>
-                <span class="count"> Quantity:01</span>
-                <button type="button" class="btn btn-primary">Checkout</button>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
       </div>
       </div>
     </nav>
 
   </header>
+
+
   <!-- add another container here -->
   <main class="landing-page">
 
@@ -429,6 +409,61 @@
         <div class="row">
           <div class="col h5">Food App</div>
           <div class="col h5 text-right">Contact Us</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="ModalCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header border-bottom-0">
+          <h5 class="modal-title" id="exampleModalLabel">
+            Your Shopping Cart
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <table class="table table-image">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">Product</th>
+                <th scope="col">Price</th>
+                <th scope="col">Qty</th>
+                <th scope="col">Total</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="w-25">
+                  <img src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/vans.png"
+                    class="img-fluid img-thumbnail" alt="Sheep">
+                </td>
+                <td>Vans Sk8-Hi MTE Shoes</td>
+                <td>$89</td>
+                <td class="qty"><input type="text" class="form-control" id="input1" value="2"></td>
+                <td>$178</td>
+                <td>
+                  <a href="#" class="btn btn-danger btn-sm">
+                    <i class="fa fa-times"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="cart-total">
+            <h5>SubTotal: <span class="price text-success">$89</span></h5>
+            <h5>Fees & Taxes: <span class="price text-success">$5</span></h5>
+            <h5>Total: <span class="price text-success">$94</span></h5>
+          </div>
+        </div>
+        <div class="modal-footer border-top-0 d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success">Checkout</button>
         </div>
       </div>
     </div>
