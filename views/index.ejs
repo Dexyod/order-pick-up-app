@@ -39,133 +39,130 @@
       <a class="navbar-brand" id="nav-brand" href="#menu">Menu</a>
       <div class="collapse navbar-collapse" id="nav-bar">
         <div class="navbar-nav">
-          <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#ModalRegister">
+          <button type="button" class="btn btn-outline-dark mr-3" data-toggle="modal" data-target="#ModalRegister">
             Register
           </button>
-          <!-- Modal Register Markup -->
-          <div id="ModalRegister" class="modal fade">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h4 class="modal-title text-xs-center">Sign-Up</h4>
-                </div>
-                <div class="modal-body">
-                  <form role="form" method="POST" action="">
-                    <input type="hidden" name="_token" value="">
-                    <div class="form-group">
-                      <label class="control-label">Username</label>
-                      <div>
-                        <input type="text" class="form-control input-lg" name="username" value="">
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="control-label">E-Mail Address</label>
-                      <div>
-                        <input type="email" class="form-control input-lg" name="email" value="">
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="control-label">Password</label>
-                      <div>
-                        <input type="password" class="form-control input-lg" name="password">
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="control-label">Phone Number</label>
-                      <div>
-                        <input type="password" class="form-control input-lg" name="password">
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-          </div><!-- /.modal -->
+          <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#ModalLogin">
+            Login
+          </button>
         </div>
-        <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#ModalLogin">
-          Login
-        </button>
-        <!-- Modal Login Markup -->
-        <div id="ModalLogin" class="modal fade">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h4 class="modal-title text-xs-center">Log in like a Boss</h4>
+        <div class="dropdown" id="cart">
+          <button type="button" class="btn btn-outline-dark" data-toggle="dropdown">
+            <i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart
+            <span class="badge badge-pill badge-danger">3</span>
+          </button>
+          <div class="dropdown-menu">
+            <div class="row total-header-section">
+              <div class="col-lg-6 col-sm-6 col-6">
+                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                <span class="badge badge-pill badge-danger">3</span>
               </div>
-              <div class="modal-body">
-                <form role="form" method="POST" action="">
-                  <input type="hidden" name="_token" value="">
-                  <div class="form-group">
-                    <label class="control-label">E-Mail Address</label>
-                    <div>
-                      <input type="email" class="form-control input-lg" name="email" value="">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="control-label">Password</label>
-                    <div>
-                      <input type="password" class="form-control input-lg" name="password">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div>
-                      <div class="checkbox">
-                        <label>
-                          <input type="checkbox" name="remember"> Remember Me
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div>
-                      <a class="btn btn-link" href="">Forgot Your Password?</a>
-                      <button type="submit" class="btn btn-info btn-block">Login</button>
-                    </div>
-                  </div>
-                </form>
+              <div class="col-lg-6 col-sm-6 col-6 total-section text-right">
+                <p>Total: <span class="text-info">$38.62</span></p>
               </div>
-              <div class="modal-footer text-xs-center">
-                Don't have an account? <a href="/auth/register">Sign up »</a>
-              </div>
-            </div><!-- /.modal-content -->
-          </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-      </div>
-
-
-      <div class="dropdown" id="cart">
-        <button type="button" class="btn btn-outline-dark" data-toggle="dropdown">
-          <i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart
-          <span class="badge badge-pill badge-danger">3</span>
-        </button>
-        <div class="dropdown-menu">
-          <div class="row total-header-section">
-            <div class="col-lg-6 col-sm-6 col-6">
-              <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-              <span class="badge badge-pill badge-danger">3</span>
-            </div>
-            <div class="col-lg-6 col-sm-6 col-6 total-section text-right">
-              <p>Total: <span class="text-info">$38.62</span></p>
-            </div>
-            <div class="row cart-detail">
-              <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
-                <img src="https://images.freeimages.com/images/large-previews/adb/food-1322804.jpg" />
-              </div>
-              <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
-                <p>Fries</p>
-                <span class="price text-info"> $5.22</span>
-                <span class="count"> Quantity:01</span>
-                <button type="button" class="btn btn-primary">Checkout</button>
+              <div class="row cart-detail">
+                <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
+                  <img src="https://images.freeimages.com/images/large-previews/adb/food-1322804.jpg" />
+                </div>
+                <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
+                  <p>Fries</p>
+                  <span class="price text-info"> $5.22</span>
+                  <span class="count"> Quantity:01</span>
+                  <button type="button" class="btn btn-primary">Checkout</button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
       </div>
-      </div>
     </nav>
-
   </header>
+  <!-- Modal Register Markup -->
+  <div id="ModalRegister" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title text-lg-center">Register</h4>
+        </div>
+        <div class="modal-body">
+          <form role="form" method="POST" action="">
+            <input type="hidden" name="_token" value="">
+            <div class="form-group">
+              <label class="control-label">Username</label>
+              <div>
+                <input type="text" class="form-control input-lg" name="username" value="" placeholder="Username">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">E-Mail Address</label>
+              <div>
+                <input type="email" class="form-control input-lg" name="email" value="" placeholder="example@email.com">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Password</label>
+              <div>
+                <input type="password" class="form-control input-lg" name="password" placeholder="Password">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Phone Number</label>
+              <div>
+                <input type="text" class="form-control input-lg" name="Phone Number" placeholder="416-420-6969">
+              </div>
+            </div>
+            <div class="form-group">
+              <div>
+                <button type="submit" class="btn btn-primary btn-block">Register</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          Welcome to Kevin Bacout!
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+  </div>
+
+  <!-- Modal Login Markup -->
+  <div id="ModalLogin" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title text-lg-center">Log in</h4>
+        </div>
+        <div class="modal-body">
+          <form role="form" method="POST" action="">
+            <input type="hidden" name="_token" value="">
+            <div class="form-group">
+              <label class="control-label">E-Mail Address</label>
+              <div>
+                <input type="email" class="form-control input-lg" name="email" value="" placeholder="example@email.com">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Password</label>
+              <div>
+                <input type="password" class="form-control input-lg" name="password" placeholder="Password">
+              </div>
+            </div>
+            <div class="form-group">
+              <div>
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer text-xs-center">
+          Don't have an account? <a data-target="#ModalRegister" data-toggle="modal" data-dismiss="modal"
+            href="#ModalRegister">Sign up »</a>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
   <!-- add another container here -->
   <main class="landing-page">
 
