@@ -28,12 +28,18 @@
       <a class="navbar-brand" id="nav-brand" href="#menu">Menu</a>
       <div class="collapse navbar-collapse" id="nav-bar">
         <div class="navbar-nav">
-          <button type="button" class="btn btn-outline-dark mr-3" data-toggle="modal" data-target="#ModalRegister">
-            Register
+        <% if(user) { %>
+          <button type="button" class="btn btn-outline-dark mr-3" id="logout">
+            Log Out
           </button>
-          <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#ModalLogin">
-            Login
-          </button>
+        <% } else { %>
+            <button type="button" class="btn btn-outline-dark mr-3" data-toggle="modal" data-target="#ModalRegister">
+              Register
+            </button>
+            <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#ModalLogin">
+              Login
+            </button>
+        <% } %>
         </div>
       </div>
 

@@ -23,4 +23,13 @@ $(() => {
       $('#ModalLogin').modal('toggle');
     });
   });
+  $('#logout').click(function (event) {
+    event.preventDefault();
+    $.ajax('/api/users/logout', {
+      method: 'POST'
+    })
+    .then(function (response) {
+      console.log(response);
+    });
+  });
 });

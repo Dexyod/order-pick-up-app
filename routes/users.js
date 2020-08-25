@@ -46,7 +46,7 @@ module.exports = (db) => {
    * Expecting user object
    * {username, email, phone, password}
    */
-  router.post("/", (req, res) => {
+  router.post("/register", (req, res) => {
     const newUser = req.body;
     dbHelper.getUserWithEmail(newUser.email)
     .then(dbChkUser => {
@@ -66,7 +66,7 @@ module.exports = (db) => {
           name:addedUser.name,
           email: addedUser.email
         };
-        res.status(201).snd(result);
+        res.status(201).send(result);
       })
     })
     .catch(e => res.status(201).send({error:e.message}));

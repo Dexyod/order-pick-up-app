@@ -126,6 +126,5 @@ module.exports = {
   getUserHistory,
   getOrderHeaderByUserId,
   getOrderDetails,
-  getUserCart,
-  addItemToCart
+  getUserCart
 }
