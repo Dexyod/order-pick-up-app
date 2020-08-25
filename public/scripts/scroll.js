@@ -1,5 +1,4 @@
 $(document).ready(function () {
-  //show button to go to textarea and autofocus if scrolled down the page
   $(window).scroll(function () {
     if ($(this).scrollTop() > 300) {
       $("#scroll-btn").addClass("show");
