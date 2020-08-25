@@ -27,13 +27,12 @@
       <a class="navbar-brand" id="nav-brand" href="/">Kevin Bacout</a>
       <a class="navbar-brand" id="nav-brand" href="#menu">Menu</a>
       <div class="collapse navbar-collapse" id="nav-bar">
-        <div class="navbar-nav">
-          <button type="button" class="btn btn-outline-dark mr-3" data-toggle="modal" data-target="#ModalRegister">
-            Register
-          </button>
-          <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#ModalLogin">
-            Login
-          </button>
+        <div class="navbar-nav" id="login-options">
+        <% if(user) { %>
+          <%- include('partials/logoutHeader') %>
+        <% } else { %>
+          <%- include('partials/loginHeader') %>
+        <% } %>
         </div>
       </div>
 
@@ -53,7 +52,7 @@
           <h4 class="modal-title text-lg-center">Register</h4>
         </div>
         <div class="modal-body">
-          <form role="form" method="POST" action="">
+          <form role="form" id="register-form">
             <input type="hidden" name="_token" value="">
             <div class="form-group">
               <label class="control-label">Username</label>
@@ -76,7 +75,7 @@
             <div class="form-group">
               <label class="control-label">Phone Number</label>
               <div>
-                <input type="text" class="form-control input-lg" name="Phone Number" placeholder="416-420-6969">
+                <input type="text" class="form-control input-lg" name="phone" placeholder="416-420-6969">
               </div>
             </div>
             <div class="form-group">
@@ -102,7 +101,7 @@
           <h4 class="modal-title text-lg-center">Log in</h4>
         </div>
         <div class="modal-body">
-          <form role="form" method="POST" action="">
+          <form role="form" id="login-form">
             <input type="hidden" name="_token" value="">
             <div class="form-group">
               <label class="control-label">E-Mail Address</label>
@@ -150,11 +149,14 @@
         </p>
       </div>
       <div class="col-12 mt-4">
-        <h3 class="text-center">Starters</h3>
+        <h3 class="text-center">Meals</h3>
         <hr class="accent my-5" />
       </div>
-      <div class="card-columns">
-        <div class="card card-body">
+      <div class="card-columns" id="menu-container">
+      </div>
+      </div>
+  </div>
+        <!-- <div class="card card-body">
           <span class="float-right font-weight-bold">$9.95</span>
           <h6 class="text-truncate">Fried Shrimp</h6>
           <img src="https://spicysouthernkitchen.com/wp-content/uploads/Fried-Shrimp-4.jpg" alt=""
@@ -220,9 +222,8 @@
             Portuguese sausage, chopped bacon, onions, peppers, a touch of
             crushed red pepper, bread crumbs and spices, topped with bacon.
           </p>
-        </div>
-      </div>
-      <div class="col-12 mt-4">
+        </div> -->
+      <!-- <div class="col-12 mt-4">
         <h3 class="text-center">Main Plates</h3>
         <hr class="accent my-5" />
       </div>
@@ -371,8 +372,8 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="modal fade" id="ModalCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  </div> -->
+  <div class="modal fade" id="ModalCart" tabindex="-1" role="dialog" aria-labelledby="ModalCartLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">

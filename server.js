@@ -56,7 +56,7 @@ app.use("/api/items", itemRoutes(db));
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).
 app.get("/", (req, res) => {
-  res.render("index");
+  res.render("index", req.session['userId'] ? { user: true } : { user: false });
 });
 
 //temp route here for sms

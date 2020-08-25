@@ -46,33 +46,30 @@ module.exports = (db) => {
    * Expecting user object
    * {username, email, phone, password}
    */
-  router.post("/", (req, res) => {
+  router.post("/register", (req, res) => {
     const newUser = req.body;
-    console.log("new user");
-    console.log(newUser);
     dbHelper.getUserWithEmail(newUser.email)
     .then(dbChkUser => {
       if (dbChkUser) {
-        console.log("user already exist");
-        console.log(dbChkUser);
-        res.send({error: "User already exist."});
+        res.status(201).send({error: "User already exist."});
         return;
       }
       newUser.password = bcrypt.hashSync(newUser.password, constants.saltRounds);
       dbHelper.addUser(newUser)
       .then(addedUser => {
         if (!addedUser) {
-          console.log("user not added");
-          res.send({error: "Logon error occurd. could not create your account."});
+          res.status(201).send({error: "Logon error occurd. could not create your account."});
           return;
         }
-        console.log("user added.");
-        console.log(addedUser);
         req.session.userId = addedUser.id;
-        res.send("OK");
+        const result = {
+          name:addedUser.name,
+          email: addedUser.email
+        };
+        res.status(201).send(result);
       })
     })
-    .catch(e => res.send(e));
+    .catch(e => res.status(201).send({error:e.message}));
   });
 
   /**
@@ -83,19 +80,23 @@ module.exports = (db) => {
     login(email, password)
       .then(user => {
         if (!user) {
-          res.send({error: "error"});
+          res.status(201).send({error: "error"});
           return;
         }
         req.session.userId = user.id;
-        //res.send({user: {name: user.name, email: user.email, id: user.id}});
-        res.redirect("/");
+        const result = {
+          user: user.name,
+          email: user.email
+        };
+        res.status(201).send(result);
+        //res.redirect("/");
       })
-      .catch(e => res.send(e));
+      .catch(e => res.status(201).send({error:e.message}));
   });
 
   router.post('/logout', (req, res) => {
     req.session.userId = null;
-    res.send({});
+    res.status(201).send({});
   });
 
   return router;
