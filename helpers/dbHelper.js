@@ -36,13 +36,13 @@ const addUser = (user) => {
   return dbConn.query(sql, [user.customerName, user.email, user.password, user.phone]);
 };
 
-const getAllItems = (limit= 6) => {
+const getAllItems = (limit = 6) => {
   const sql = `SELECT id, name, description, price, photo_url
   FROM items
   LIMIT $1;`;
 
   return dbConn.query(sql, [limit])
-  .then(res => res.rows);
+    .then(res => res.rows);
 };
 
 /**
@@ -63,7 +63,7 @@ const getUserHistory = (userId, limit = 4) => {
   LIMIT $2;`;
 
   return dbConn.query(sql, [userId, limit])
-  .then(res => res.rows);
+    .then(res => res.rows);
 };
 
 /**
@@ -78,7 +78,7 @@ const getOrderHeaderByUserId = (userId) => {
   AND end_time IS NULL;`;
 
   return dbConn.query(sql, [userId])
-  .then(res => res.rows[0]);
+    .then(res => res.rows[0]);
 };
 /**
  * Get cart detail for the logged on user
@@ -93,7 +93,7 @@ const getOrderDetails = (order_id) => {
   WHERE order_id = $1;`;
 
   return dbConn.query(sql, [order_id])
-  .then(res => res.rows);
+    .then(res => res.rows);
 };
 
 /**
@@ -104,18 +104,18 @@ const getOrderDetails = (order_id) => {
 const getUserCart = (userId) => {
   return new Promise((resolve, reject) => {
     getOrderHeaderByUserId(userId)
-    .then(header => {
-      if(!header) {
-        resolve({});
-      }
-      getOrderDetails(header.id)
-      .then(details => {
-        if (!details) {
-          resolve({})
+      .then(header => {
+        if (!header) {
+          resolve({});
         }
-        resolve({header, details});
+        getOrderDetails(header.id)
+          .then(details => {
+            if (!details) {
+              resolve({})
+            }
+            resolve({ header, details });
+          });
       });
-    });
   });
 };
 

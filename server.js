@@ -8,6 +8,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const sass = require("node-sass-middleware");
 const cookieSession = require('cookie-session');
+const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
 const app = express();
 app.use(cookieSession({
@@ -56,6 +57,16 @@ app.use("/api/items", itemRoutes(db));
 // Separate them into separate routes files (see above).
 app.get("/", (req, res) => {
   res.render("index");
+});
+
+//temp route here for sms
+app.post('/sms', (req, res) => {
+  const twiml = new MessagingResponse();
+  console.log(req.body.Body);
+  twiml.message(`second test`);
+
+  res.writeHead(200, { 'Content-Type': 'text/xml' });
+  res.end(twiml.toString());
 });
 
 app.listen(PORT, () => {
