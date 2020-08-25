@@ -31,33 +31,30 @@ module.exports = (db) => {
 
   router.get("/", (req, res) => {
     dbHelper.getAllItems()
-    .then(data => res.send(data))
-    .catch(error => res.send(error));
+    .then(data => res.status(201).send(data))
+    .catch(error => res.status(201).send(error));
   });
 
   router.get("/user-cart", (req, res) => {
-    console.log("/user-cart", req.session.userid);
     if (!req.session.userid) {
       res.redirect("/");
       return;
     }
     dbHelper.getUserCart(req.session.userId)
     .then(data => {
-      console.log(data);
-      res.send(data)
+      res.status(201).send(data)
     })
-    .catch(error => res.send(error));
+    .catch(e => res.status(201).send({error:e.message}));
   });
 
   router.get("/user-history", (req, res) => {
-    console.log("/user-history", req.session.userid);
     if (!req.session.userid) {
       res.redirect("/");
       return;
     }
     dbHelper.getUserHistory(req.session.userId)
-    .then(data => res.send(data))
-    .catch(error => res.send(error));
+    .then(data => res.status(201).send(data))
+    .catch(e => res.status(201).send({error:e.message}));
   });
 
   return router;
