@@ -16,7 +16,7 @@ const setDbConn = conn => {
  * @return {Promise<{}>} A promise to the user.
  */
 const getUserWithEmail = email => {
-  const sql = `SELECT id, name, email, password
+  const sql = `SELECT id, name, email, password, phone
   FROM users
   WHERE email = $1;`;
 
@@ -30,7 +30,7 @@ const getUserWithEmail = email => {
  * Password is already hashed.
  */
 const addUser = (user) => {
-  sql = `INSERT INTO users (name, email, password, phone)
+  const sql = `INSERT INTO users (name, email, password, phone)
   VALUES ($1, $2, $3, $4) RETURNING *`;
   return dbConn.query(sql, [user.username, user.email, user.password, user.phone]);
 };
@@ -96,6 +96,104 @@ const getOrderDetails = (order_id) => {
 };
 
 /**
+ * Create new order for this user.
+ * @param {*} items [{id, description, quantity, price, comment}]
+ * @param {*} userId
+ */
+const createNewOrder = (items, userId) => {
+  const sql1 = `INSERT INTO orders (user_id, phone, comment, order_date, start_time, end_time)
+       SELECT $1, users.phone, '', now()::date, now(), now()
+       FROM users WHERE users.id = $2 RETURNING id;`;
+
+  const sql2 = `INSERT INTO order_details (order_id, item_id, description, quantity, price, comment)
+          VALUES ($1, $2, $3, $4, $5, $6);`;
+
+  return new Promise((resolve, reject) => {
+      //this code taken from https://node-postgres.com/features/transactions
+      ;(async () => {
+        // note: we don't try/catch this because if connecting throws an exception
+        // we don't need to dispose of the client (it will be undefined)
+        //const client = await pool.connect()
+        try {
+          await dbConn.query('BEGIN')
+          const res = await client.query(sql1, [userId, userId])
+          const order_id = res.rows[0].id;
+          for (item of items) {
+            const sqlParams = [order_id, item.id, item.description, item.quantity, item.price, item.comment];
+            await client.query(sql2, sqlParams);
+          }
+          await dbConn.query('COMMIT')
+        } catch (e) {
+          await dbConn.query('ROLLBACK')
+          reject(e.message);//throw e
+        } finally {
+          dbConn.release()
+        }
+      });//().catch(e => console.error(e.stack))
+      resolve(true);
+  });
+};
+
+/**
+ * Create new cart for this user.
+ * @param {{}} item object containing the item to start cart with.
+ * @param {*} userId
+ */
+const createNewCart = (item, userId) => {
+
+  const sql1 = `INSERT INTO orders (user_id, phone, comment, order_date, start_time, end_time)
+       SELECT $1, users.phone, '', now()::date, now(), NULL
+       FROM users WHERE users.id = $2 RETURNING id;`;
+
+  const sql2 = `INSERT INTO order_details (order_id, item_id, description, quantity, price, comment)
+          SELECT $1, $2, items.description, $3, items.price, $4
+          FROM items WHERE items.id = $5;`
+
+  return new Promise((resolve, reject) => {
+      //this code taken from https://node-postgres.com/features/transactions
+      ;(async () => {
+        // note: we don't try/catch this because if connecting throws an exception
+        // we don't need to dispose of the client (it will be undefined)
+        //const client = await pool.connect()
+        try {
+          await dbConn.query('BEGIN')
+          const res = await client.query(sql1, [userId, userId])
+          const sqlParams = [res.rows[0].id, item.id, item.quantity, item.comment, item.id];
+          await client.query(sql2, sqlParams);
+          await dbConn.query('COMMIT')
+        } catch (e) {
+          await dbConn.query('ROLLBACK')
+          reject(e.message);//throw e
+        } finally {
+          dbConn.release()
+        }
+      });//().catch(e => console.error(e.stack))
+      resolve(true);
+  });
+};
+
+/**
+ * Update and existing cart.
+ * @param {*} item
+ * @param {*} userId
+ */
+const addItemToCart = (item, userId) => {
+
+  //this is assuming that there are only ever on open cart for this user. this should always be correct unless something went wrong.
+  const sql = `INSERT INTO order_details (order_id, item_id, quantity, description, price, comment)
+  SELECT $1, $2, $3, items.description, items.price, $4
+  FROM items WHERE items.id = $5 RETURNING *;`
+
+  //get order id of open cart.
+  return getOrderHeaderByUserId(userId)
+  .then(header => {
+    const sqlParams = [header.id, item.id, item.quantity, item.comment, item.id];
+    dbConn.query(sql, sqlParams)
+    .then(res => res.rows);
+  });
+  //.catch(e => {throw e;});
+}
+/**
  * Get the current cart information of the logged on user
  * @param  userId This userd id of the loged on user
  * this method will return an empty object {} if no cart is present.
@@ -118,6 +216,43 @@ const getUserCart = (userId) => {
   });
 };
 
+/**
+ * This method adds a single item to the cart or a create a new cart with  single item.
+ * @param {*} item
+ * @param {*} userId
+ */
+const addToCart = (item, userId) => {
+  //first check for an open cart. if none, create one.
+  getOrderHeaderByUserId(userId)
+  .then(header => {
+    if (!header) {
+      createNewCart(item, userId)
+      .then( () => {
+          return getUserCart(userId);
+      });
+    } else {
+      addItemToCart(item, userId)
+      .then(() => {
+        return getUserCart(userId);
+      });
+    }
+  });
+};
+
+/**
+ * This method create a new cart with all items from front page.
+ * @param {*} items
+ * @param {*} userId
+ *
+ * Expecting items array.
+ */
+const createOrder = (items, userId) => {
+  createNewOrder(items, userId)
+  .then( () => {
+      return getUserCart(userId);
+  });
+};
+
 module.exports = {
   getUserWithEmail,
   setDbConn,
@@ -127,5 +262,6 @@ module.exports = {
   getOrderHeaderByUserId,
   getOrderDetails,
   getUserCart,
-  addItemToCart
+  addToCart,
+  createOrder
 }

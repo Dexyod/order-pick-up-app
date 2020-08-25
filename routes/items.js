@@ -57,5 +57,21 @@ module.exports = (db) => {
     .catch(e => res.status(201).send({error:e.message}));
   });
 
+  /**
+   * Add item to cart.
+   * expecting item object in req.body
+   * items array [{id, description, quantity, price, comment}]
+   */
+  router.post("/", (req, res) => {
+    if (!req.session.userid) {
+      res.status(201).send({error: "You are not logged on. Please log on or crate an account."});
+      return;
+    }
+    const {items} = req.body;
+    dbHelper.createOrder(items, req.session.userid)
+    .then(data => res.status(201).send(data))
+    .catch(e => res.status(201).send({error:e.message}));
+  });
+
   return router;
 };
