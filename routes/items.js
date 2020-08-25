@@ -4,7 +4,11 @@
  *   these routes are mounted onto /widgets
  * See: https://expressjs.com/en/guide/using-middleware.html#middleware.router
  */
-const messageRestaurant = require('../public/scripts/twilio');
+const {
+  messageCustomer,
+  messageRestaurant,
+  orderComplete
+} = require('../public/scripts/twilio');
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
@@ -13,21 +17,6 @@ const dbHelper = require("../helpers/dbHelper.js");
 
 module.exports = (db) => {
   dbHelper.setDbConn(db);
-
-  /*   router.get("/", (req, res) => {
-      let query = `SELECT * FROM widgets`;
-      console.log(query);
-      db.query(query)
-        .then(data => {
-          const widgets = data.rows;
-          res.json({ widgets });
-        })
-        .catch(err => {
-          res
-            .status(500)
-            .json({ error: err.message });
-        });
-    }); */
 
   router.get("/", (req, res) => {
     dbHelper.getAllItems()
@@ -58,6 +47,10 @@ module.exports = (db) => {
     dbHelper.getUserHistory(req.session.userId)
       .then(data => res.send(data))
       .catch(error => res.send(error));
+  });
+
+  router.post("/message-client", (req, res) => {
+
   });
 
   return router;

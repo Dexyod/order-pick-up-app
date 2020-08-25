@@ -34,20 +34,20 @@ const orderComplete = (username, orderId, customerPhone) => {
 const messageRestaurant = (orderData) => {
   const { header, details } = orderData;
 
-  let orderMessage = `\nOrder id: ${header.id},\n\nCustomer Phone: +1${header.phone},\n\nOrder Timestamp: ${header.start_time},\n\n`
+  let orderMessage = `\nOrder id: ${header.id},\n\nCustomer Phone: +1${header.phone},\n\nOrder Timestamp: ${header.start_time},\n\n`;
   details.map((item) => {
-    orderMessage += `Item Name: ${item.name},\n\nQuantity: ${item.quantity},\n\nItem Comment: ${item.comment},\n\n`
-  })
+    orderMessage += `Item Name: ${item.name},\n\nQuantity: ${item.quantity},\n\nItem Comment: ${item.comment},\n\n`;
+  });
   client.messages
     .create({
       body: orderMessage,
       from: `+1${twilioNumber}`,
       to: `+1${restaurantPhone}`
-    })
+    });
 };
 
-module.export = {
+module.exports = {
   messageCustomer,
   messageRestaurant,
   orderComplete
-}
+};
