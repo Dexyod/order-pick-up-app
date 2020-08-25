@@ -1,10 +1,26 @@
 $(() => {
-  $.ajax({
-    method: "GET",
-    url: "/api/users"
-  }).done((users) => {
-    for(user of users) {
-      $("<div>").text(user.name).appendTo($("body"));
-    }
-  });;
+  $('#register-form').submit(function (event) {
+    event.preventDefault();
+    const formData = $(this).serialize();
+    $.ajax('/api/users/register', {
+      method: 'POST',
+      data: formData
+    })
+    .then(function (response) {
+      console.log(response);
+      $('#ModalRegister').modal('toggle');
+    });
+  });
+  $('#login-form').submit(function (event) {
+    event.preventDefault();
+    const formData = $(this).serialize();
+    $.ajax('/api/users/login', {
+      method: 'POST',
+      data: formData
+    })
+    .then(function (response) {
+      console.log(response);
+      $('#ModalLogin').modal('toggle');
+    });
+  });
 });
