@@ -31,7 +31,6 @@ $(() => {
       cart[this.name].quantity = 1;
     }
     localStorage.setItem('cart', JSON.stringify(cart));
-    console.log(JSON.parse(localStorage.getItem('cart')));
   });
 
   $('#register-form').submit(function (event) {
