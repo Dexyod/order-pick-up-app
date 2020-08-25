@@ -8,6 +8,7 @@
 const express = require('express');
 const router  = express.Router();
 const bcrypt = require('bcrypt');
+const constants = require("../constants/constants");
 const dbHelper = require("../helpers/dbHelper.js");
 
 module.exports = (db) => {
@@ -43,7 +44,7 @@ module.exports = (db) => {
   //Create new user??
   /**
    * Expecting user object
-   * {customerName, email, phone, password}
+   * {username, email, phone, password}
    */
   router.post("/", (req, res) => {
     const newUser = req.body;
@@ -57,7 +58,7 @@ module.exports = (db) => {
         res.send({error: "User already exist."});
         return;
       }
-      newUser.password = bcrypt.hashSync(newUser.password, 12);
+      newUser.password = bcrypt.hashSync(newUser.password, constants.saltRounds);
       dbHelper.addUser(newUser)
       .then(addedUser => {
         if (!addedUser) {

@@ -8,6 +8,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const sass = require("node-sass-middleware");
 const cookieSession = require('cookie-session');
+
 const app = express();
 app.use(cookieSession({
   name: 'session',

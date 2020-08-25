@@ -8,12 +8,13 @@
 const express = require('express');
 const router  = express.Router();
 const bcrypt = require('bcrypt');
+const constants = require("../constants/constants");
 const dbHelper = require("../helpers/dbHelper.js");
 
 module.exports = (db) => {
   dbHelper.setDbConn(db);
 
-  router.get("/", (req, res) => {
+/*   router.get("/", (req, res) => {
     let query = `SELECT * FROM widgets`;
     console.log(query);
     db.query(query)
@@ -26,6 +27,38 @@ module.exports = (db) => {
           .status(500)
           .json({ error: err.message });
       });
+  }); */
+
+  router.get("/", (req, res) => {
+    dbHelper.getAllItems()
+    .then(data => res.send(data))
+    .catch(error => res.send(error));
   });
+
+  router.get("/user-cart", (req, res) => {
+    console.log("/user-cart", req.session.userid);
+    if (!req.session.userid) {
+      res.redirect("/");
+      return;
+    }
+    dbHelper.getUserCart(req.session.userId)
+    .then(data => {
+      console.log(data);
+      res.send(data)
+    })
+    .catch(error => res.send(error));
+  });
+
+  router.get("/user-history", (req, res) => {
+    console.log("/user-history", req.session.userid);
+    if (!req.session.userid) {
+      res.redirect("/");
+      return;
+    }
+    dbHelper.getUserHistory(req.session.userId)
+    .then(data => res.send(data))
+    .catch(error => res.send(error));
+  });
+
   return router;
 };
