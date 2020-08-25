@@ -105,7 +105,7 @@ const getUserCart = (userId) => {
   return new Promise((resolve, reject) => {
     getOrderHeaderByUserId(userId)
     .then(header => {
-      if(!header) {
+      if (!header) {
         resolve({});
       }
       getOrderDetails(header.id)
@@ -127,5 +127,6 @@ module.exports = {
   getUserHistory,
   getOrderHeaderByUserId,
   getOrderDetails,
-  getUserCart
+  getUserCart,
+  addItemToCart
 }

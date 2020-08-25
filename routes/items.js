@@ -37,7 +37,7 @@ module.exports = (db) => {
 
   router.get("/user-cart", (req, res) => {
     if (!req.session.userid) {
-      res.redirect("/");
+      res.status(201).send({error: "You are not logged on. Please log on or crate an account."});
       return;
     }
     dbHelper.getUserCart(req.session.userId)
@@ -49,7 +49,7 @@ module.exports = (db) => {
 
   router.get("/user-history", (req, res) => {
     if (!req.session.userid) {
-      res.redirect("/");
+      res.status(201).send({error: "You are not logged on. Please log on or crate an account."});
       return;
     }
     dbHelper.getUserHistory(req.session.userId)
