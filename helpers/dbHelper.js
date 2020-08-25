@@ -32,12 +32,7 @@ const getUserWithEmail = email => {
 const addUser = (user) => {
   sql = `INSERT INTO users (name, email, password, phone)
   VALUES ($1, $2, $3, $4) RETURNING *`;
-<<<<<<< HEAD
   return dbConn.query(sql, [user.username, user.email, user.password, user.phone]);
-=======
-
-  return dbConn.query(sql, [user.customerName, user.email, user.password, user.phone]);
->>>>>>> 26a9eed5e83436744bdf1494247ca66f250cb439
 };
 
 const getAllItems = (limit= 6) => {
