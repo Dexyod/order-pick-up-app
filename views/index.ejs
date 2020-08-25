@@ -27,18 +27,11 @@
       <a class="navbar-brand" id="nav-brand" href="/">Kevin Bacout</a>
       <a class="navbar-brand" id="nav-brand" href="#menu">Menu</a>
       <div class="collapse navbar-collapse" id="nav-bar">
-        <div class="navbar-nav">
+        <div class="navbar-nav" id="login-options">
         <% if(user) { %>
-          <button type="button" class="btn btn-outline-dark mr-3" id="logout">
-            Log Out
-          </button>
+          <%- include('partials/logoutHeader') %>
         <% } else { %>
-            <button type="button" class="btn btn-outline-dark mr-3" data-toggle="modal" data-target="#ModalRegister">
-              Register
-            </button>
-            <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#ModalLogin">
-              Login
-            </button>
+          <%- include('partials/loginHeader') %>
         <% } %>
         </div>
       </div>
