@@ -67,7 +67,7 @@ module.exports = (db) => {
       res.status(201).send({error: "You are not logged on. Please log on or crate an account."});
       return;
     }
-    const {items} = req.body;
+    const items = JSON.parse(req.body.items);
     dbHelper.createOrder(items, req.session.userid)
     .then(data => res.status(201).send(data))
     .catch(e => res.status(201).send({error:e.message}));

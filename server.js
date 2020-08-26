@@ -55,9 +55,24 @@ app.use("/api/items", itemRoutes(db));
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).
 app.get("/", (req, res) => {
-  res.render("index");
+  res.render("index_copy");
 });
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
 });
+
+const getPennyFormat = (val) => {
+  const str = parseFloat(val).toFixed(2);
+  const array = str.split('.');
+  let result = "";
+  if (array[0] === '0') {
+    result = array[1];
+    if (result[0] === '0') {
+      result = result[1] + result[0];
+    }
+  } else {
+    result = array[0] + array[1];
+  }
+  return result;
+};

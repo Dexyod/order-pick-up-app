@@ -32,7 +32,8 @@ const getUserWithEmail = email => {
 const addUser = (user) => {
   const sql = `INSERT INTO users (name, email, password, phone)
   VALUES ($1, $2, $3, $4) RETURNING *`;
-  return dbConn.query(sql, [user.username, user.email, user.password, user.phone]);
+  return dbConn.query(sql, [user.username, user.email, user.password, user.phone])
+  .then(res => res.rows[0]);
 };
 
 const getAllItems = (limit= 6) => {
@@ -85,7 +86,7 @@ const getOrderHeaderByUserId = (userId) => {
  * this method will be called by getUserCart below.
 */
 const getOrderDetails = (order_id) => {
-  const sql = `SELECT order_details.line_no, order_details.quantity, items.name, order_details.description,
+  const sql = `SELECT order_details.quantity, items.name, order_details.description,
   order_details.price, items.photo_url, order_details.comment
   FROM order_details
   JOIN items ON items.id = order_details.item_id
@@ -95,12 +96,27 @@ const getOrderDetails = (order_id) => {
   .then(res => res.rows);
 };
 
+const getPennyFormat = (val) => {
+  const str = parseFloat(val).toFixed(2);
+  const array = str.split('.');
+  let result = "";
+  if (array[0] === '0') {
+    result = array[1];
+    if (result[0] === '0') {
+      result = result[1] + result[0];
+    }
+  } else {
+    result = array[0] + array[1];
+  }
+  return result;
+};
 /**
  * Create new order for this user.
  * @param {*} items [{id, description, quantity, price, comment}]
  * @param {*} userId
  */
 const createNewOrder = (items, userId) => {
+
   const sql1 = `INSERT INTO orders (user_id, phone, comment, order_date, start_time, end_time)
        SELECT $1, users.phone, '', now()::date, now(), now()
        FROM users WHERE users.id = $2 RETURNING id;`;
@@ -110,27 +126,29 @@ const createNewOrder = (items, userId) => {
 
   return new Promise((resolve, reject) => {
       //this code taken from https://node-postgres.com/features/transactions
-      ;(async () => {
-        // note: we don't try/catch this because if connecting throws an exception
-        // we don't need to dispose of the client (it will be undefined)
-        //const client = await pool.connect()
-        try {
-          await dbConn.query('BEGIN')
-          const res = await client.query(sql1, [userId, userId])
+      dbConn.query('BEGIN')
+      .then(() =>{
+        dbConn.query(sql1, [userId, userId])
+        .then(res => {
           const order_id = res.rows[0].id;
           for (item of items) {
-            const sqlParams = [order_id, item.id, item.description, item.quantity, item.price, item.comment];
-            await client.query(sql2, sqlParams);
+            const sqlParams = [order_id, item.id, item.description, item.quantity, getPennyFormat(item.price), item.comment];
+            dbConn.query(sql2, sqlParams)
+            .then(() => {
+
+            });
+           continue;
           }
-          await dbConn.query('COMMIT')
-        } catch (e) {
-          await dbConn.query('ROLLBACK')
-          reject(e.message);//throw e
-        } finally {
-          dbConn.release()
-        }
-      });//().catch(e => console.error(e.stack))
-      resolve(true);
+          dbConn.query('COMMIT')
+          .then(() => { resolve(true);});
+        });
+      })
+      .catch(e => {
+        dbConn.query('ROLLBACK')
+        .then(() => {
+          reject(e.message);
+        });
+      });
   });
 };
 
@@ -151,24 +169,24 @@ const createNewCart = (item, userId) => {
 
   return new Promise((resolve, reject) => {
       //this code taken from https://node-postgres.com/features/transactions
-      ;(async () => {
-        // note: we don't try/catch this because if connecting throws an exception
-        // we don't need to dispose of the client (it will be undefined)
-        //const client = await pool.connect()
-        try {
-          await dbConn.query('BEGIN')
-          const res = await client.query(sql1, [userId, userId])
+      dbConn.query('BEGIN')
+      .then(() => {
+        dbConn.query(sql1, [userId, userId])
+        .then(res => {
           const sqlParams = [res.rows[0].id, item.id, item.quantity, item.comment, item.id];
-          await client.query(sql2, sqlParams);
-          await dbConn.query('COMMIT')
-        } catch (e) {
-          await dbConn.query('ROLLBACK')
-          reject(e.message);//throw e
-        } finally {
-          dbConn.release()
-        }
-      });//().catch(e => console.error(e.stack))
-      resolve(true);
+          dbConn.query(sql2, sqlParams)
+          .then(() => {
+            dbConn.query('COMMIT')
+            .then(() => { resolve(true);});
+          });
+        });
+      })
+      .catch(e => {
+        dbConn.query('ROLLBACK')
+        .then(() => {
+          reject(e.message);
+        });
+      });
   });
 };
 
@@ -199,6 +217,7 @@ const addItemToCart = (item, userId) => {
  * this method will return an empty object {} if no cart is present.
  */
 const getUserCart = (userId) => {
+
   return new Promise((resolve, reject) => {
     getOrderHeaderByUserId(userId)
     .then(header => {
@@ -210,6 +229,7 @@ const getUserCart = (userId) => {
         if (!details) {
           resolve({})
         }
+        //console.log("returning header, details");//, header, details);
         resolve({header, details});
       });
     });
@@ -222,20 +242,29 @@ const getUserCart = (userId) => {
  * @param {*} userId
  */
 const addToCart = (item, userId) => {
-  //first check for an open cart. if none, create one.
-  getOrderHeaderByUserId(userId)
-  .then(header => {
-    if (!header) {
-      createNewCart(item, userId)
-      .then( () => {
-          return getUserCart(userId);
-      });
-    } else {
-      addItemToCart(item, userId)
-      .then(() => {
-        return getUserCart(userId);
-      });
-    }
+
+  return new Promise((resolve, reject) => {
+    //first check for an open cart. if none, create one.
+    return getOrderHeaderByUserId(userId)
+    .then(header => {
+      if (!header) {
+        createNewCart(item, userId)
+        .then( () => {
+            getUserCart(userId)
+            .then(cartData => {
+              resolve(cartData);
+            });
+        });
+      } else {
+        addItemToCart(item, userId)
+        .then(() => {
+          getUserCart(userId)
+          .then(cartData => {
+            resolve(cartData);
+          });
+        });
+      }
+    });
   });
 };
 
@@ -247,9 +276,15 @@ const addToCart = (item, userId) => {
  * Expecting items array.
  */
 const createOrder = (items, userId) => {
-  createNewOrder(items, userId)
-  .then( () => {
-      return getUserCart(userId);
+
+  return new Promise((resolve, reject) => {
+    createNewOrder(items, userId)
+    .then( result => {
+      getUserCart(userId)
+      .then(cartData => {
+        resolve(cartData);
+      });
+    });
   });
 };
 

@@ -61,12 +61,14 @@ module.exports = (db) => {
           res.status(201).send({error: "Logon error occurd. could not create your account."});
           return;
         }
+
         req.session.userId = addedUser.id;
         const result = {
-          name:addedUser.name,
-          email: addedUser.email
+          username:addedUser.name,
+          email: addedUser.email,
+          phone: addedUser.phone
         };
-        res.status(201).snd(result);
+        res.status(201).send(result);
       })
     })
     .catch(e => res.status(201).send({error:e.message}));
@@ -77,6 +79,7 @@ module.exports = (db) => {
    */
   router.post('/login', (req, res) => {
     const {email, password} = req.body;
+    //console.log(email, password);
     login(email, password)
       .then(user => {
         if (!user) {
@@ -89,7 +92,6 @@ module.exports = (db) => {
           email: user.email
         };
         res.status(201).send(result);
-        //res.redirect("/");
       })
       .catch(e => res.status(201).send({error:e.message}));
   });
