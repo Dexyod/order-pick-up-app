@@ -18,7 +18,6 @@ CREATE TABLE order_details (
   item_id INTEGER REFERENCES items(id) ON DELETE CASCADE, /* not sure about this. if you delete an item you cannot delete the line from the order detail. Soooo, do not delete items??*/
   description VARCHAR(255),
   quantity SMALLINT NOT NULL,
-  price INTEGER NOT NULL,
-  comment VARCHAR(255)
+  price INTEGER NOT NULL
 );
 

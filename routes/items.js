@@ -22,30 +22,30 @@ module.exports = (db) => {
 
   router.get("/", (req, res) => {
     dbHelper.getAllItems()
-      .then(data => res.status(201).send(data))
-      .catch(error => res.status(201).send(error));
+      .then(data => res.status(200).send(data))
+      .catch(error => res.status(500).send({error: error.message}));
   });
 
   router.get("/user-cart", (req, res) => {
     if (!req.session.userId) {
-      res.status(201).send({ error: "You are not logged on. Please log on or crate an account." });
+      res.status(401).send({error: "You are not logged on. Please log on or crate an account."});
       return;
     }
     dbHelper.getUserCart(req.session.userId)
       .then(data => {
-        res.status(201).send(data)
+        res.status(200).send(data)
       })
-      .catch(e => res.status(201).send({ error: e.message }));
+      .catch(e => res.status(500).send({ error: e.message }));
   });
 
   router.get("/user-history", (req, res) => {
     if (!req.session.userId) {
-      res.status(201).send({ error: "You are not logged on. Please log on or crate an account." });
+      res.status(401).send({error: "You are not logged on. Please log on or crate an account."});
       return;
     }
     dbHelper.getUserHistory(req.session.userId)
-      .then(data => res.status(201).send(data))
-      .catch(e => res.status(201).send({ error: e.message }));
+      .then(data => res.status(200).send(data))
+      .catch(e => res.status(500).send({ error: e.message }));
   });
 
   router.post("/sms", (req, res) => {
@@ -54,6 +54,7 @@ module.exports = (db) => {
       messageCustomer(params[1], params[2], params[3], params[4]);
     } else if (params[0] === 'Complete') {
       orderComplete(params[1], params[2], params[3]);
+      dbHelper.setOrderCompleted(params[2]);
     } else {
       failedMessage();
     }
@@ -65,6 +66,7 @@ module.exports = (db) => {
    * items array [{id, description, quantity, price, comment}]
    */
   router.post("/checkout", (req, res) => {
+
     if (!req.session.userId) {
       res.status(400).send({ error: "You are not logged on. Please log on or create an account." });
       return;
@@ -75,7 +77,7 @@ module.exports = (db) => {
         res.status(201).send(data)
 
       })
-      .catch(e => res.status(400).send({ error: e.message }));
+      .catch(e => res.status(500).send({ error: e.message }));
   });
 
   return router;
