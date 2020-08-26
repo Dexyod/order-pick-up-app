@@ -25,7 +25,7 @@ module.exports = (db) => {
   });
 
   router.get("/user-cart", (req, res) => {
-    if (!req.session.userid) {
+    if (!req.session.userId) {
       res.status(201).send({error: "You are not logged on. Please log on or crate an account."});
       return;
     }
@@ -37,7 +37,7 @@ module.exports = (db) => {
   });
 
   router.get("/user-history", (req, res) => {
-    if (!req.session.userid) {
+    if (!req.session.userId) {
       res.status(201).send({error: "You are not logged on. Please log on or crate an account."});
       return;
     }
@@ -56,12 +56,13 @@ module.exports = (db) => {
    * items array [{id, description, quantity, price, comment}]
    */
   router.post("/", (req, res) => {
-    if (!req.session.userid) {
+    console.log(req.body);
+    if (!req.session.userId) {
       res.status(201).send({error: "You are not logged on. Please log on or crate an account."});
       return;
     }
     const items = JSON.parse(req.body.items);
-    dbHelper.createOrder(items, req.session.userid)
+    dbHelper.createOrder(items, req.session.userId)
     .then(data => res.status(201).send(data))
     .catch(e => res.status(201).send({error:e.message}));
   });
