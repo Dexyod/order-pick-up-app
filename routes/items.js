@@ -27,13 +27,8 @@ module.exports = (db) => {
   });
 
   router.get("/user-cart", (req, res) => {
-<<<<<<< HEAD
     if (!req.session.userId) {
       res.status(201).send({error: "You are not logged on. Please log on or crate an account."});
-=======
-    if (!req.session.userid) {
-      res.status(201).send({ error: "You are not logged on. Please log on or crate an account." });
->>>>>>> 6b3c27ef9e6dc03f98d6aed44194f40e65df210a
       return;
     }
     dbHelper.getUserCart(req.session.userId)
