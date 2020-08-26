@@ -39,8 +39,8 @@ module.exports = (db) => {
   });
 
   router.get("/user-history", (req, res) => {
-    if (!req.session.userid) {
-      res.status(201).send({ error: "You are not logged on. Please log on or crate an account." });
+    if (!req.session.userId) {
+      res.status(201).send({error: "You are not logged on. Please log on or crate an account."});
       return;
     }
     dbHelper.getUserHistory(req.session.userId)

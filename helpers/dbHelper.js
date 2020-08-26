@@ -96,6 +96,47 @@ const getOrderDetails = (order_id) => {
     .then(res => res.rows);
 };
 
+/**
+ * Create new order for this user.
+ * @param {*} items [{id, description, quantity, price, comment}]
+ * @param {*} userId
+ */
+const createNewOrder = (items, userId) => {
+
+  const sql1 = `INSERT INTO orders (user_id, phone, comment, order_date, start_time, end_time)
+       SELECT $1, users.phone, '', now()::date, now(), NULL
+       FROM users WHERE users.id = $2 RETURNING id;`;
+
+  const sql2 = `INSERT INTO order_details (order_id, item_id, description, quantity, price, comment)
+          VALUES ($1, $2, $3, $4, $5, $6);`;
+
+  return new Promise((resolve, reject) => {
+      //this code taken from https://node-postgres.com/features/transactions
+      dbConn.query('BEGIN')
+      .then(() =>{
+        dbConn.query(sql1, [userId, userId])
+        .then(res => {
+          const order_id = res.rows[0].id;
+          for (item of items) {
+            const sqlParams = [order_id, item.id, item.description, item.quantity, item.price, item.comment];
+            dbConn.query(sql2, sqlParams)
+            .then(() => {
+
+            });
+           continue;
+          }
+          dbConn.query('COMMIT')
+          .then(() => { resolve(true);});
+        });
+      })
+      .catch(e => {
+        dbConn.query('ROLLBACK')
+        .then(() => {
+          reject(e.message);
+        });
+      });
+  });
+};
 
 /**
  * Create new cart for this user.
