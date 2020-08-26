@@ -19,10 +19,65 @@ $(() => {
     `);
   };
 
+  const createCartItem = (item) => {
+    return (`
+    <tr>
+      <td class="w-25">
+        <img src="${item.photo_url}"
+          class="cart-image" alt="Sheep">
+      </td>
+      <td style="padding-top: 60px;">${item.name}</td>
+      <td style="padding-top: 60px;">$${(item.price / 100).toFixed(2)}</td>
+      <td style="padding-top: 54px;  width: 69px;" class="qty table-padding"><input type="text" class="form-control"
+          id="cart-quantity" name="${item.id}" value="${item.quantity}"></td>
+      <td style="padding-top: 60px;">$${(item.price * item.quantity / 100).toFixed(2)}</td>
+      <td style="padding-top: 47px;">
+        <a href="#" id="remove-item-button" name="${item.id}" class="btn btn-danger btn-sm">
+          <i class="fa fa-times"></i>
+        </a>
+      </td>
+    </tr>
+    `);
+  };
+
+  $('#cart-checkout').on('click', function(event) {
+    const cart = JSON.parse(localStorage.getItem('cart'));
+    let formData = { items: []};
+    for (const key in cart) {
+      cart[key].comment = "";
+      formData.items.push(cart[key]);
+    }
+    $.ajax('/api/items/checkout', {
+      method: 'POST',
+      data: formData
+    })
+      .then(function (response) {
+        console.log(response)
+      });
+  });
+
+  $('#cartItems').on('click', '#remove-item-button', function (event) {
+    let cart = JSON.parse(localStorage.getItem('cart'));
+    delete cart[this.name];
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartNumber();
+    updateCartItems();
+  });
+
+  $('#cartItems').on('input', '#cart-quantity', function (event) {
+    let cart = JSON.parse(localStorage.getItem('cart'));
+    cart[this.name].quantity = this.value;
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartNumber();
+    updateCartItems();
+    let newVal = $(`#cart-quantity[name="${this.name}"]`).val();
+    $(`#cart-quantity[name="${this.name}"]`).focus().val("").val(newVal);
+  });
+
   $('#menu-container').on('click', '#add-to-cart-button', function (event) {
     let cart = {};
     if (localStorage.getItem('cart')) {
-      cart = JSON.parse(localStorage.getItem('cart'))
+      cart = JSON.parse(localStorage.getItem('cart'));
     }
     if (cart[this.name]) {
       cart[this.name].quantity++;
@@ -32,15 +87,16 @@ $(() => {
     }
     localStorage.setItem('cart', JSON.stringify(cart));
     updateCartNumber();
+    updateCartItems();
   });
 
   $('#register-form').submit(function (event) {
     event.preventDefault();
     const formData = $(this).serialize();
     $.ajax('/api/users/register', {
-        method: 'POST',
-        data: formData
-      })
+      method: 'POST',
+      data: formData
+    })
       .then(function (response) {
         console.log(response);
         $('#ModalRegister').modal('toggle');
@@ -54,9 +110,9 @@ $(() => {
     event.preventDefault();
     const formData = $(this).serialize();
     $.ajax('/api/users/login', {
-        method: 'POST',
-        data: formData
-      })
+      method: 'POST',
+      data: formData
+    })
       .then(function (response) {
         console.log(response);
         $('#ModalLogin').modal('toggle');
@@ -69,26 +125,59 @@ $(() => {
   $('#login-options').on('click', '#logout', function (event) {
     event.preventDefault();
     $.ajax('/api/users/logout', {
-        method: 'POST'
-      })
+      method: 'POST'
+    })
       .then(function (response) {
         console.log(response);
         $("#login-options").load(location.href + " #login-options");
       });
   });
   $.ajax('/api/items/', {
-      method: 'GET'
-    })
+    method: 'GET'
+  })
     .then(function (response) {
       response.forEach((item) => {
         menuItems[item.id] = item;
-        $('#menu-container').prepend(createMenuItem(item));
+        switch (item.category) {
+          case 'Starter':
+            $('#starter-container').prepend(createMenuItem(item));
+            break;
+          case 'Main':
+            $('#main-container').prepend(createMenuItem(item));
+            break;
+          case 'Desert':
+            $('#desert-container').prepend(createMenuItem(item));
+            break;
+          case 'Drink':
+            $('#drink-container').prepend(createMenuItem(item));
+            break;
+          default:
+            break;
+        }
       });
-    })
+    });
   const updateCartNumber = () => {
     if (localStorage.getItem('cart')) {
-      $("#cart-number").html(Object.keys(JSON.parse(localStorage.getItem('cart'))).length);
+      $(".cart-number").html(Object.keys(JSON.parse(localStorage.getItem('cart'))).length);
     }
-  }
+  };
+  const updateCartItems = () => {
+    let subTotal = 0;
+    $("#cartItems").empty();
+    if (!localStorage.getItem('cart')) {
+      $("#cartItems").html("<p>Cart is empty!</p>");
+    } else {
+      const cart = JSON.parse(localStorage.getItem('cart'));
+      for (const key in cart) {
+        $("#cartItems").append(createCartItem(cart[key]));
+        subTotal += (cart[key].price * cart[key].quantity / 100);
+      }
+      $("#cart-subtotal").html(`$${subTotal.toFixed(2)}`);
+      let taxes = (subTotal * 0.13);
+      $("#cart-taxes").html(`$${taxes.toFixed(2)}`);
+      $("#cart-total").html(`$${(subTotal + taxes).toFixed(2)}`);
+    }
+  };
   updateCartNumber();
+  updateCartItems();
 });

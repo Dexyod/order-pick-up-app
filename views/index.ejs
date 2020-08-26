@@ -39,97 +39,15 @@
       <div class="dropdown" id="cart">
         <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#ModalCart">
           <i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart
-          <span class="badge badge-pill badge-danger" id="cart-number">0</span>
+          <span class="badge badge-pill badge-danger cart-number">0</span>
         </button>
       </div>
     </nav>
   </header>
-  <!-- Modal Register Markup -->
-  <div id="ModalRegister" class="modal fade">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title text-lg-center">Register</h4>
-        </div>
-        <div class="modal-body">
-          <form role="form" id="register-form">
-            <input type="hidden" name="_token" value="">
-            <div class="form-group">
-              <label class="control-label">Username</label>
-              <div>
-                <input type="text" class="form-control input-lg" name="username" value="" placeholder="Username">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="control-label">E-Mail Address</label>
-              <div>
-                <input type="email" class="form-control input-lg" name="email" value="" placeholder="example@email.com">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="control-label">Password</label>
-              <div>
-                <input type="password" class="form-control input-lg" name="password" placeholder="Password">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="control-label">Phone Number</label>
-              <div>
-                <input type="text" class="form-control input-lg" name="phone" placeholder="416-420-6969">
-              </div>
-            </div>
-            <div class="form-group">
-              <div>
-                <button type="submit" class="btn btn-primary btn-block">Register</button>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          Welcome to Kevin Bacout!
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
-  </div>
 
-  <!-- Modal Login Markup -->
-  <div id="ModalLogin" class="modal fade">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title text-lg-center">Log in</h4>
-        </div>
-        <div class="modal-body">
-          <form role="form" id="login-form">
-            <input type="hidden" name="_token" value="">
-            <div class="form-group">
-              <label class="control-label">E-Mail Address</label>
-              <div>
-                <input type="email" class="form-control input-lg" name="email" value="" placeholder="example@email.com">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="control-label">Password</label>
-              <div>
-                <input type="password" class="form-control input-lg" name="password" placeholder="Password">
-              </div>
-            </div>
-            <div class="form-group">
-              <div>
-                <button type="submit" class="btn btn-primary btn-block">Login</button>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer text-xs-center mr-3">
-          Don't have an account? <a class="ml-3" data-target="#ModalRegister" data-toggle="modal" data-dismiss="modal"
-            href="#ModalRegister">Sign up »</a>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
+  <%- include('partials/registerModal') %>
 
+  <%- include('partials/loginModal') %>
   <!-- add main container here -->
   <main class="landing-page">
     <div class="welcome-container">
@@ -148,93 +66,39 @@
           neque, sit vitae iure.
         </p>
       </div>
+      <div id="menu-container">
       <div class="col-12 mt-4">
-        <h3 class="text-center">Meals</h3>
+        <h3 class="text-center">Starters</h3>
         <hr class="accent my-5" />
       </div>
-      <div class="card-columns col-12" id="menu-container">
+      <div class="card-columns col-12" id="starter-container">
+      </div>
+      <div class="col-12 mt-4">
+        <h3 class="text-center">Mains</h3>
+        <hr class="accent my-5" />
+      </div>
+      <div class="card-columns col-12" id="main-container">
+      </div>
+      <div class="col-12 mt-4">
+        <h3 class="text-center">Deserts</h3>
+        <hr class="accent my-5" />
+      </div>
+      <div class="card-columns col-12" id="desert-container">
+      </div>
+      <div class="col-12 mt-4">
+        <h3 class="text-center">Drinks</h3>
+        <hr class="accent my-5" />
+      </div>
+      <div class="card-columns col-12" id="drink-container">
       </div>
     </div>
+    </div>
   </div>
+  <%- include('partials/cartModal') %>
 
-  <div class="modal fade" id="ModalCart" tabindex="-1" role="dialog" aria-labelledby="ModalCartLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header border-bottom-0">
-          <h5 class="modal-title" id="exampleModalLabel">
-            Your Shopping Cart
-          </h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <table class="table table-image">
-            <thead>
-              <tr>
-                <th scope="col"></th>
-                <th scope="col">Product</th>
-                <th scope="col">Price</th>
-                <th scope="col">Qty</th>
-                <th scope="col">Total</th>
-                <th scope="col">Remove</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="w-25">
-                  <img src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/vans.png"
-                    class="img-fluid img-thumbnail" alt="Sheep">
-                </td>
-                <td style="padding-top: 60px;">Vans Sk8-Hi MTE Shoes</td>
-                <td style="padding-top: 60px;">$89</td>
-                <td style="padding-top: 54px;" class="qty table-padding"><input type="text" class="form-control"
-                    id="input1" value="2"></td>
-                <td style="padding-top: 60px;">$178</td>
-                <td style="padding-top: 47 px;">
-                  <a href="#" class="btn btn-danger btn-sm">
-                    <i class="fa fa-times"></i>
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="cart-total">
-            <div class="row">
-              <div class="col-10">
-                <h5>SubTotal: </h5>
-              </div>
-              <div class="col-2">
-                <div class="text-success">$89.00</div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-10">
-                <h5>Fees & Taxes: </h5>
-              </div>
-              <div class="col-2">
-                <div class="text-success">$10000.00</div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-10">
-                <h5>Total: </h5>
-              </div>
-              <div class="col-2">
-                <div class="text-success">$94.00</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer border-top-0 d-flex justify-content-between">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-success">Checkout</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <button id="scroll-btn"><i class="fa fa-shopping-cart"></i></button>
+  <button id="scroll-btn"><i class="fa fa-shopping-cart"></i>
+    <span class="badge badge-pill badge-danger cart-number">0</span>
+  </button>
   <footer class="footer-basic-centered">
     <img src="https://www.biography.com/.image/t_share/MTE5NDg0MDU1MTkwNjAzMjc5/kevin-bacon-9542173-1-402.jpg" alt=""
       class="img-thumbnail">

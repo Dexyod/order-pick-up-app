@@ -60,14 +60,14 @@ app.get("/", (req, res) => {
 });
 
 //temp route here for sms
-app.post('/sms', (req, res) => {
-  const twiml = new MessagingResponse();
-  console.log(req.body.Body);
-  twiml.message(`second test`);
+// app.post('/sms', (req, res) => {
+//   const twiml = new MessagingResponse();
+//   console.log(req.body.Body);
+//   twiml.message(`second test`);
 
-  res.writeHead(200, { 'Content-Type': 'text/xml' });
-  res.end(twiml.toString());
-});
+//   res.writeHead(200, { 'Content-Type': 'text/xml' });
+//   res.end(twiml.toString());
+// });
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);

@@ -34,15 +34,14 @@ const addUser = (user) => {
   const sql = `INSERT INTO users (name, email, password, phone)
   VALUES ($1, $2, $3, $4) RETURNING *`;
   return dbConn.query(sql, [user.username, user.email, user.password, user.phone])
-  .then(res => res.rows[0]);
+    .then(res => res.rows[0]);
 };
 
-const getAllItems = (limit = 6) => {
+const getAllItems = () => {
   const sql = `SELECT id, name, description, category, price, photo_url
-  FROM items
-  LIMIT $1;`;
+  FROM items;`;
 
-  return dbConn.query(sql, [limit])
+  return dbConn.query(sql)
     .then(res => res.rows);
 };
 
@@ -155,24 +154,24 @@ const createNewCart = (item, userId) => {
           FROM items WHERE items.id = $5;`
 
   return new Promise((resolve, reject) => {
-      //this code taken from https://node-postgres.com/features/transactions
-      dbConn.query('BEGIN')
+    //this code taken from https://node-postgres.com/features/transactions
+    dbConn.query('BEGIN')
       .then(() => {
         dbConn.query(sql1, [userId, userId])
-        .then(res => {
-          const sqlParams = [res.rows[0].id, item.id, item.quantity, item.comment, item.id];
-          dbConn.query(sql2, sqlParams)
-          .then(() => {
-            dbConn.query('COMMIT')
-            .then(() => { resolve(true);});
+          .then(res => {
+            const sqlParams = [res.rows[0].id, item.id, item.quantity, item.comment, item.id];
+            dbConn.query(sql2, sqlParams)
+              .then(() => {
+                dbConn.query('COMMIT')
+                  .then(() => { resolve(true); });
+              });
           });
-        });
       })
       .catch(e => {
         dbConn.query('ROLLBACK')
-        .then(() => {
-          reject(e.message);
-        });
+          .then(() => {
+            reject(e.message);
+          });
       });
   });
 };
@@ -191,11 +190,11 @@ const addItemToCart = (item, userId) => {
 
   //get order id of open cart.
   return getOrderHeaderByUserId(userId)
-  .then(header => {
-    const sqlParams = [header.id, item.id, item.quantity, item.comment, item.id];
-    dbConn.query(sql, sqlParams)
-    .then(res => res.rows);
-  });
+    .then(header => {
+      const sqlParams = [header.id, item.id, item.quantity, item.comment, item.id];
+      dbConn.query(sql, sqlParams)
+        .then(res => res.rows);
+    });
   //.catch(e => {throw e;});
 }
 /**
@@ -203,23 +202,66 @@ const addItemToCart = (item, userId) => {
  * @param  userId This userd id of the loged on user
  * this method will return an empty object {} if no cart is present.
  */
+
+/**
+ * Create new order for this user.
+ * @param {*} items [{id, description, quantity, price, comment}]
+ * @param {*} userId
+ */
+const createNewOrder = (items, userId) => {
+
+  const sql1 = `INSERT INTO orders (user_id, phone, comment, order_date, start_time, end_time)
+       SELECT $1, users.phone, '', now()::date, now(), NULL
+       FROM users WHERE users.id = $2 RETURNING id;`;
+
+  const sql2 = `INSERT INTO order_details (order_id, item_id, description, quantity, price, comment)
+          VALUES ($1, $2, $3, $4, $5, $6);`;
+
+  return new Promise((resolve, reject) => {
+    //this code taken from https://node-postgres.com/features/transactions
+    dbConn.query('BEGIN')
+      .then(() => {
+        dbConn.query(sql1, [userId, userId])
+          .then(res => {
+            const order_id = res.rows[0].id;
+            for (const item of items) {
+              const sqlParams = [order_id, item.id, item.description, item.quantity, utils.getPennyFormat(item.price), item.comment];
+              dbConn.query(sql2, sqlParams)
+                .then(() => {
+
+                });
+              continue;
+            }
+            dbConn.query('COMMIT')
+              .then(() => { resolve(true); });
+          });
+      })
+      .catch(e => {
+        dbConn.query('ROLLBACK')
+          .then(() => {
+            reject(e.message);
+          });
+      });
+  });
+};
+
 const getUserCart = (userId) => {
 
   return new Promise((resolve, reject) => {
     getOrderHeaderByUserId(userId)
-    .then(header => {
-      if (!header) {
-        resolve({});
-      }
-      getOrderDetails(header.id)
-      .then(details => {
-        if (!details) {
-          resolve({})
+      .then(header => {
+        if (!header) {
+          resolve({});
         }
-        //console.log("returning header, details");//, header, details);
-        resolve({header, details});
+        getOrderDetails(header.id)
+          .then(details => {
+            if (!details) {
+              resolve({})
+            }
+            //console.log("returning header, details");//, header, details);
+            resolve({ header, details });
+          });
       });
-    });
   });
 };
 
@@ -233,25 +275,25 @@ const addToCart = (item, userId) => {
   return new Promise((resolve, reject) => {
     //first check for an open cart. if none, create one.
     return getOrderHeaderByUserId(userId)
-    .then(header => {
-      if (!header) {
-        createNewCart(item, userId)
-        .then( () => {
-            getUserCart(userId)
-            .then(cartData => {
-              resolve(cartData);
+      .then(header => {
+        if (!header) {
+          createNewCart(item, userId)
+            .then(() => {
+              getUserCart(userId)
+                .then(cartData => {
+                  resolve(cartData);
+                });
             });
-        });
-      } else {
-        addItemToCart(item, userId)
-        .then(() => {
-          getUserCart(userId)
-          .then(cartData => {
-            resolve(cartData);
-          });
-        });
-      }
-    });
+        } else {
+          addItemToCart(item, userId)
+            .then(() => {
+              getUserCart(userId)
+                .then(cartData => {
+                  resolve(cartData);
+                });
+            });
+        }
+      });
   });
 };
 
@@ -266,12 +308,12 @@ const createOrder = (items, userId) => {
 
   return new Promise((resolve, reject) => {
     createNewOrder(items, userId)
-    .then( result => {
-      getUserCart(userId)
-      .then(cartData => {
-        resolve(cartData);
+      .then(result => {
+        getUserCart(userId)
+          .then(cartData => {
+            resolve(cartData);
+          });
       });
-    });
   });
 };
 
