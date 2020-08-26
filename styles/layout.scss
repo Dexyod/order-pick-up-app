@@ -106,7 +106,23 @@ label{
 .card-body:hover {
   box-shadow: 2px 5px #d2d2d2;
 }
-
+.card-body {
+  img{
+    width: 200px;
+    height: 200px;
+    object-fit: fill;
+  }
+}
+.card{
+  height: 480px;
+  justify-content: space-around;
+  h6{
+    border: 1px solid #d2d2d2;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+  }
+}
 
 .container {
   padding: 2rem 0rem;

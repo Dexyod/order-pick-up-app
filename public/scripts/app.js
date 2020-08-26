@@ -2,16 +2,16 @@ $(() => {
   const menuItems = {};
   const createMenuItem = (item) => {
     return (`
-    <div class="card card-body">
-    <span class="float-right font-weight-bold">$${(item.price / 100).toFixed(2)}</span>
-    <h6 class="text-truncate">${item.name}</h6>
+    <div class="card card-body d-flex align-items-center">
+    <h6>${item.name}</h6>
+    <span class="font-weight-bold">$${(item.price / 100).toFixed(2)}</span>
     <img src="${item.photo_url}" alt=""
-      class="img-thumbnail">
+      class="img-thumbnail card-img-top">
     <p class="small item-description">
       ${item.description}
     </p>
     <div>
-    <button type="button" class="btn btn-outline-dark mr-3 float-right" id="add-to-cart-button" name="${item.id}">
+    <button type="button" class="btn btn-outline-dark mr-3" id="add-to-cart-button" name="${item.id}">
       Add To Cart
     </button>
     </div>
@@ -21,7 +21,7 @@ $(() => {
 
   $('#menu-container').on('click', '#add-to-cart-button', function (event) {
     let cart = {};
-    if(localStorage.getItem('cart')) {
+    if (localStorage.getItem('cart')) {
       cart = JSON.parse(localStorage.getItem('cart'))
     }
     if (cart[this.name]) {
@@ -37,9 +37,9 @@ $(() => {
     event.preventDefault();
     const formData = $(this).serialize();
     $.ajax('/api/users/register', {
-        method: 'POST',
-        data: formData
-      })
+      method: 'POST',
+      data: formData
+    })
       .then(function (response) {
         console.log(response);
         $('#ModalRegister').modal('toggle');
@@ -53,9 +53,9 @@ $(() => {
     event.preventDefault();
     const formData = $(this).serialize();
     $.ajax('/api/users/login', {
-        method: 'POST',
-        data: formData
-      })
+      method: 'POST',
+      data: formData
+    })
       .then(function (response) {
         console.log(response);
         $('#ModalLogin').modal('toggle');
@@ -68,18 +68,18 @@ $(() => {
   $('#login-options').on('click', '#logout', function (event) {
     event.preventDefault();
     $.ajax('/api/users/logout', {
-        method: 'POST'
-      })
+      method: 'POST'
+    })
       .then(function (response) {
         console.log(response);
         $("#login-options").load(location.href + " #login-options");
       });
   });
   $.ajax('/api/items/', {
-      method: 'GET'
-    })
+    method: 'GET'
+  })
     .then(function (response) {
-      response.forEach((item) =>  {
+      response.forEach((item) => {
         menuItems[item.id] = item;
         $('#menu-container').prepend(createMenuItem(item));
       });

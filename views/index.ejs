@@ -28,11 +28,11 @@
       <a class="navbar-brand" id="nav-brand" href="#menu">Menu</a>
       <div class="collapse navbar-collapse" id="nav-bar">
         <div class="navbar-nav" id="login-options">
-        <% if(user) { %>
+          <% if(user) { %>
           <%- include('partials/logoutHeader') %>
-        <% } else { %>
+          <% } else { %>
           <%- include('partials/loginHeader') %>
-        <% } %>
+          <% } %>
         </div>
       </div>
 
@@ -152,9 +152,9 @@
         <h3 class="text-center">Meals</h3>
         <hr class="accent my-5" />
       </div>
-      <div class="card-columns" id="menu-container">
+      <div class="card-columns col-12" id="menu-container">
       </div>
-      </div>
+    </div>
   </div>
 
   <div class="modal fade" id="ModalCart" tabindex="-1" role="dialog" aria-labelledby="ModalCartLabel"
