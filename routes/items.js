@@ -50,8 +50,6 @@ module.exports = (db) => {
 
   router.post("/sms", (req, res) => {
     const params = req.body.Body.split(' ');
-    // console.log(params);
-    // console.log(req.body)
     if (params[0] === 'ETA') {
       messageCustomer(params[1], params[2], params[3], params[4]);
     } else if (params[0] === 'Complete') {

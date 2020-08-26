@@ -170,7 +170,7 @@ const addItemToCart = (item, userId) => {
 const createNewOrder = (items, userId) => {
 
   const sql1 = `INSERT INTO orders (user_id, phone, comment, order_date, start_time, end_time)
-       SELECT $1, users.phone, '', now()::date, now(), now()
+       SELECT $1, users.phone, '', now()::date, now(), NULL
        FROM users WHERE users.id = $2 RETURNING id;`;
 
   const sql2 = `INSERT INTO order_details (order_id, item_id, description, quantity, price, comment)
@@ -183,7 +183,7 @@ const createNewOrder = (items, userId) => {
         dbConn.query(sql1, [userId, userId])
           .then(res => {
             const order_id = res.rows[0].id;
-            for (item of items) {
+            for (const item of items) {
               const sqlParams = [order_id, item.id, item.description, item.quantity, utils.getPennyFormat(item.price), item.comment];
               dbConn.query(sql2, sqlParams)
                 .then(() => {

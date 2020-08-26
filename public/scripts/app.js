@@ -47,9 +47,6 @@ $(() => {
       cart[key].comment = "";
       formData.items.push(cart[key]);
     }
-    // formData = JSON.stringify(formData);
-    // let parsedData = JSON.parse(formData);
-    // console.log(parsedData.items);
     $.ajax('/api/items/checkout', {
       method: 'POST',
       data: formData
@@ -140,7 +137,6 @@ $(() => {
   })
     .then(function (response) {
       response.forEach((item) => {
-        console.table(item);
         menuItems[item.id] = item;
         switch (item.category) {
           case 'Starter':
