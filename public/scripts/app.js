@@ -120,15 +120,30 @@ $(() => {
     method: 'GET'
   })
     .then(function (response) {
-      console.table(response);
       response.forEach((item) => {
+        console.table(item);
         menuItems[item.id] = item;
-        $('#menu-container').prepend(createMenuItem(item));
+        switch (item.category) {
+          case 'Starter':
+            $('#starter-container').prepend(createMenuItem(item));
+            break;
+          case 'Main':
+            $('#main-container').prepend(createMenuItem(item));
+            break;
+          case 'Desert':
+            $('#desert-container').prepend(createMenuItem(item));
+            break;
+          case 'Drink':
+            $('#drink-container').prepend(createMenuItem(item));
+            break;
+          default:
+            break;
+        }
       });
     });
   const updateCartNumber = () => {
     if (localStorage.getItem('cart')) {
-      $("#cart-number").html(Object.keys(JSON.parse(localStorage.getItem('cart'))).length);
+      $(".cart-number").html(Object.keys(JSON.parse(localStorage.getItem('cart'))).length);
     }
   };
   const updateCartItems = () => {

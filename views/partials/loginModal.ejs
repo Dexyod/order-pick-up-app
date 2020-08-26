@@ -1,0 +1,36 @@
+<!-- Modal Login Markup -->
+<div id="ModalLogin" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title text-lg-center">Log in</h4>
+      </div>
+      <div class="modal-body">
+        <form role="form" id="login-form">
+          <input type="hidden" name="_token" value="">
+          <div class="form-group">
+            <label class="control-label">E-Mail Address</label>
+            <div>
+              <input type="email" class="form-control input-lg" name="email" value="" placeholder="example@email.com">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Password</label>
+            <div>
+              <input type="password" class="form-control input-lg" name="password" placeholder="Password">
+            </div>
+          </div>
+          <div class="form-group">
+            <div>
+              <button type="submit" class="btn btn-primary btn-block">Login</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer text-xs-center mr-3">
+        Don't have an account? <a class="ml-3" data-target="#ModalRegister" data-toggle="modal" data-dismiss="modal"
+          href="#ModalRegister">Sign up »</a>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
