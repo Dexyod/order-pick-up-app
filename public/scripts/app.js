@@ -31,15 +31,16 @@ $(() => {
       cart[this.name].quantity = 1;
     }
     localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartNumber();
   });
 
   $('#register-form').submit(function (event) {
     event.preventDefault();
     const formData = $(this).serialize();
     $.ajax('/api/users/register', {
-      method: 'POST',
-      data: formData
-    })
+        method: 'POST',
+        data: formData
+      })
       .then(function (response) {
         console.log(response);
         $('#ModalRegister').modal('toggle');
@@ -53,9 +54,9 @@ $(() => {
     event.preventDefault();
     const formData = $(this).serialize();
     $.ajax('/api/users/login', {
-      method: 'POST',
-      data: formData
-    })
+        method: 'POST',
+        data: formData
+      })
       .then(function (response) {
         console.log(response);
         $('#ModalLogin').modal('toggle');
@@ -68,22 +69,26 @@ $(() => {
   $('#login-options').on('click', '#logout', function (event) {
     event.preventDefault();
     $.ajax('/api/users/logout', {
-      method: 'POST'
-    })
+        method: 'POST'
+      })
       .then(function (response) {
         console.log(response);
         $("#login-options").load(location.href + " #login-options");
       });
   });
   $.ajax('/api/items/', {
-    method: 'GET'
-  })
+      method: 'GET'
+    })
     .then(function (response) {
       response.forEach((item) => {
         menuItems[item.id] = item;
         $('#menu-container').prepend(createMenuItem(item));
       });
-      console.log(menuItems);
     })
-
+  const updateCartNumber = () => {
+    if (localStorage.getItem('cart')) {
+      $("#cart-number").html(Object.keys(JSON.parse(localStorage.getItem('cart'))).length);
+    }
+  }
+  updateCartNumber();
 });
