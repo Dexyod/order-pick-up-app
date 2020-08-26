@@ -20,37 +20,50 @@ module.exports = (db) => {
 
   router.get("/", (req, res) => {
     dbHelper.getAllItems()
-      .then(data => res.send(data))
-      .catch(error => res.send(error));
+    .then(data => res.status(201).send(data))
+    .catch(error => res.status(201).send(error));
   });
 
   router.get("/user-cart", (req, res) => {
-    console.log("/user-cart", req.session.userId);
-    if (!req.session.userId) {
-      res.redirect("/");
+    if (!req.session.userid) {
+      res.status(201).send({error: "You are not logged on. Please log on or crate an account."});
       return;
     }
     dbHelper.getUserCart(req.session.userId)
-      .then(data => {
-        console.log(data);
-        res.send(data);
-      })
-      .catch(error => res.send(error));
+    .then(data => {
+      res.status(201).send(data)
+    })
+    .catch(e => res.status(201).send({error:e.message}));
   });
 
   router.get("/user-history", (req, res) => {
-    console.log("/user-history", req.session.userId);
-    if (!req.session.userId) {
-      res.redirect("/");
+    if (!req.session.userid) {
+      res.status(201).send({error: "You are not logged on. Please log on or crate an account."});
       return;
     }
     dbHelper.getUserHistory(req.session.userId)
-      .then(data => res.send(data))
-      .catch(error => res.send(error));
+    .then(data => res.status(201).send(data))
+    .catch(e => res.status(201).send({error:e.message}));
   });
 
   router.post("/message-client", (req, res) => {
 
+  });
+
+  /**
+   * Add item to cart.
+   * expecting item object in req.body
+   * items array [{id, description, quantity, price, comment}]
+   */
+  router.post("/", (req, res) => {
+    if (!req.session.userid) {
+      res.status(201).send({error: "You are not logged on. Please log on or crate an account."});
+      return;
+    }
+    const items = JSON.parse(req.body.items);
+    dbHelper.createOrder(items, req.session.userid)
+    .then(data => res.status(201).send(data))
+    .catch(e => res.status(201).send({error:e.message}));
   });
 
   return router;

@@ -1,4 +1,5 @@
 const { resolveInclude } = require("ejs");
+const utils = require("./utils");
 
 let dbConn;
 
@@ -16,7 +17,7 @@ const setDbConn = conn => {
  * @return {Promise<{}>} A promise to the user.
  */
 const getUserWithEmail = email => {
-  const sql = `SELECT id, name, email, password
+  const sql = `SELECT id, name, email, password, phone
   FROM users
   WHERE email = $1;`;
 
@@ -30,13 +31,14 @@ const getUserWithEmail = email => {
  * Password is already hashed.
  */
 const addUser = (user) => {
-  sql = `INSERT INTO users (name, email, password, phone)
+  const sql = `INSERT INTO users (name, email, password, phone)
   VALUES ($1, $2, $3, $4) RETURNING *`;
-  return dbConn.query(sql, [user.username, user.email, user.password, user.phone]);
+  return dbConn.query(sql, [user.username, user.email, user.password, user.phone])
+  .then(res => res.rows[0]);
 };
 
 const getAllItems = (limit = 6) => {
-  const sql = `SELECT id, name, description, price, photo_url
+  const sql = `SELECT id, name, description, category, price, photo_url
   FROM items
   LIMIT $1;`;
 
@@ -85,7 +87,7 @@ const getOrderHeaderByUserId = (userId) => {
  * this method will be called by getUserCart below.
 */
 const getOrderDetails = (order_id) => {
-  const sql = `SELECT order_details.line_no, order_details.quantity, items.name, order_details.description,
+  const sql = `SELECT order_details.quantity, items.name, order_details.description,
   order_details.price, items.photo_url, order_details.comment
   FROM order_details
   JOIN items ON items.id = order_details.item_id
@@ -96,25 +98,180 @@ const getOrderDetails = (order_id) => {
 };
 
 /**
+ * Create new order for this user.
+ * @param {*} items [{id, description, quantity, price, comment}]
+ * @param {*} userId
+ */
+const createNewOrder = (items, userId) => {
+
+  const sql1 = `INSERT INTO orders (user_id, phone, comment, order_date, start_time, end_time)
+       SELECT $1, users.phone, '', now()::date, now(), now()
+       FROM users WHERE users.id = $2 RETURNING id;`;
+
+  const sql2 = `INSERT INTO order_details (order_id, item_id, description, quantity, price, comment)
+          VALUES ($1, $2, $3, $4, $5, $6);`;
+
+  return new Promise((resolve, reject) => {
+      //this code taken from https://node-postgres.com/features/transactions
+      dbConn.query('BEGIN')
+      .then(() =>{
+        dbConn.query(sql1, [userId, userId])
+        .then(res => {
+          const order_id = res.rows[0].id;
+          for (item of items) {
+            const sqlParams = [order_id, item.id, item.description, item.quantity, utils.getPennyFormat(item.price), item.comment];
+            dbConn.query(sql2, sqlParams)
+            .then(() => {
+
+            });
+           continue;
+          }
+          dbConn.query('COMMIT')
+          .then(() => { resolve(true);});
+        });
+      })
+      .catch(e => {
+        dbConn.query('ROLLBACK')
+        .then(() => {
+          reject(e.message);
+        });
+      });
+  });
+};
+
+/**
+ * Create new cart for this user.
+ * @param {{}} item object containing the item to start cart with.
+ * @param {*} userId
+ */
+const createNewCart = (item, userId) => {
+
+  const sql1 = `INSERT INTO orders (user_id, phone, comment, order_date, start_time, end_time)
+       SELECT $1, users.phone, '', now()::date, now(), NULL
+       FROM users WHERE users.id = $2 RETURNING id;`;
+
+  const sql2 = `INSERT INTO order_details (order_id, item_id, description, quantity, price, comment)
+          SELECT $1, $2, items.description, $3, items.price, $4
+          FROM items WHERE items.id = $5;`
+
+  return new Promise((resolve, reject) => {
+      //this code taken from https://node-postgres.com/features/transactions
+      dbConn.query('BEGIN')
+      .then(() => {
+        dbConn.query(sql1, [userId, userId])
+        .then(res => {
+          const sqlParams = [res.rows[0].id, item.id, item.quantity, item.comment, item.id];
+          dbConn.query(sql2, sqlParams)
+          .then(() => {
+            dbConn.query('COMMIT')
+            .then(() => { resolve(true);});
+          });
+        });
+      })
+      .catch(e => {
+        dbConn.query('ROLLBACK')
+        .then(() => {
+          reject(e.message);
+        });
+      });
+  });
+};
+
+/**
+ * Update and existing cart.
+ * @param {*} item
+ * @param {*} userId
+ */
+const addItemToCart = (item, userId) => {
+
+  //this is assuming that there are only ever on open cart for this user. this should always be correct unless something went wrong.
+  const sql = `INSERT INTO order_details (order_id, item_id, quantity, description, price, comment)
+  SELECT $1, $2, $3, items.description, items.price, $4
+  FROM items WHERE items.id = $5 RETURNING *;`
+
+  //get order id of open cart.
+  return getOrderHeaderByUserId(userId)
+  .then(header => {
+    const sqlParams = [header.id, item.id, item.quantity, item.comment, item.id];
+    dbConn.query(sql, sqlParams)
+    .then(res => res.rows);
+  });
+  //.catch(e => {throw e;});
+}
+/**
  * Get the current cart information of the logged on user
  * @param  userId This userd id of the loged on user
  * this method will return an empty object {} if no cart is present.
  */
 const getUserCart = (userId) => {
+
   return new Promise((resolve, reject) => {
     getOrderHeaderByUserId(userId)
-      .then(header => {
-        if (!header) {
-          resolve({});
+    .then(header => {
+      if (!header) {
+        resolve({});
+      }
+      getOrderDetails(header.id)
+      .then(details => {
+        if (!details) {
+          resolve({})
         }
-        getOrderDetails(header.id)
-          .then(details => {
-            if (!details) {
-              resolve({})
-            }
-            resolve({ header, details });
-          });
+        //console.log("returning header, details");//, header, details);
+        resolve({header, details});
       });
+    });
+  });
+};
+
+/**
+ * This method adds a single item to the cart or a create a new cart with  single item.
+ * @param {*} item
+ * @param {*} userId
+ */
+const addToCart = (item, userId) => {
+
+  return new Promise((resolve, reject) => {
+    //first check for an open cart. if none, create one.
+    return getOrderHeaderByUserId(userId)
+    .then(header => {
+      if (!header) {
+        createNewCart(item, userId)
+        .then( () => {
+            getUserCart(userId)
+            .then(cartData => {
+              resolve(cartData);
+            });
+        });
+      } else {
+        addItemToCart(item, userId)
+        .then(() => {
+          getUserCart(userId)
+          .then(cartData => {
+            resolve(cartData);
+          });
+        });
+      }
+    });
+  });
+};
+
+/**
+ * This method create a new cart with all items from front page.
+ * @param {*} items
+ * @param {*} userId
+ *
+ * Expecting items array.
+ */
+const createOrder = (items, userId) => {
+
+  return new Promise((resolve, reject) => {
+    createNewOrder(items, userId)
+    .then( result => {
+      getUserCart(userId)
+      .then(cartData => {
+        resolve(cartData);
+      });
+    });
   });
 };
 
@@ -126,5 +283,7 @@ module.exports = {
   getUserHistory,
   getOrderHeaderByUserId,
   getOrderDetails,
-  getUserCart
+  getUserCart,
+  addToCart,
+  createOrder
 }
