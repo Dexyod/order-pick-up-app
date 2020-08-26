@@ -6,7 +6,7 @@
  */
 
 const express = require('express');
-const router  = express.Router();
+const router = express.Router();
 const bcrypt = require('bcrypt');
 const constants = require("../constants/constants");
 const dbHelper = require("../helpers/dbHelper.js");
@@ -14,19 +14,19 @@ const dbHelper = require("../helpers/dbHelper.js");
 module.exports = (db) => {
   dbHelper.setDbConn(db);
 
-   /**
-   * Check if a user exists with a given username and password
-   * @param {String} email
-   * @param {String} password encrypted
-   */
-  const login =  function(email, password) {
+  /**
+  * Check if a user exists with a given username and password
+  * @param {String} email
+  * @param {String} password encrypted
+  */
+  const login = function (email, password) {
     return dbHelper.getUserWithEmail(email)
-    .then(user => {
-      if (bcrypt.compareSync(password, user.password)) {
-        return user;
-      }
-      return null;
-    });
+      .then(user => {
+        if (bcrypt.compareSync(password, user.password)) {
+          return user;
+        }
+        return null;
+      });
   }
 
   /*router.get("/", (req, res) => {
@@ -49,41 +49,41 @@ module.exports = (db) => {
   router.post("/register", (req, res) => {
     const newUser = req.body;
     dbHelper.getUserWithEmail(newUser.email)
-    .then(dbChkUser => {
-      if (dbChkUser) {
-        res.status(201).send({error: "User already exist."});
-        return;
-      }
-      newUser.password = bcrypt.hashSync(newUser.password, constants.saltRounds);
-      dbHelper.addUser(newUser)
-      .then(addedUser => {
-        if (!addedUser) {
-          res.status(201).send({error: "Logon error occurd. could not create your account."});
+      .then(dbChkUser => {
+        if (dbChkUser) {
+          res.status(201).send({ error: "User already exist." });
           return;
         }
+        newUser.password = bcrypt.hashSync(newUser.password, constants.saltRounds);
+        dbHelper.addUser(newUser)
+          .then(addedUser => {
+            if (!addedUser) {
+              res.status(201).send({ error: "Logon error occurd. could not create your account." });
+              return;
+            }
 
-        req.session.userId = addedUser.id;
-        const result = {
-          username:addedUser.name,
-          email: addedUser.email,
-          phone: addedUser.phone
-        };
-        res.status(201).send(result);
+            req.session.userId = addedUser.id;
+            const result = {
+              username: addedUser.name,
+              email: addedUser.email,
+              phone: addedUser.phone
+            };
+            res.status(201).send(result);
+          })
       })
-    })
-    .catch(e => res.status(201).send({error:e.message}));
+      .catch(e => res.status(201).send({ error: e.message }));
   });
 
   /**
    * Expecting {email, password}
    */
   router.post('/login', (req, res) => {
-    const {email, password} = req.body;
+    const { email, password } = req.body;
     //console.log(email, password);
     login(email, password)
       .then(user => {
         if (!user) {
-          res.status(201).send({error: "error"});
+          res.status(201).send({ error: "error" });
           return;
         }
         req.session.userId = user.id;
@@ -94,7 +94,7 @@ module.exports = (db) => {
         };
         res.status(201).send(result);
       })
-      .catch(e => res.status(201).send({error:e.message}));
+      .catch(e => res.status(201).send({ error: e.message }));
   });
 
   router.post('/logout', (req, res) => {
