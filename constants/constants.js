@@ -1,3 +1,3 @@
-const saltRounds = 12;
-
-module.exports = { saltRounds };
+module.exports = {
+  saltRounds: 12
+}

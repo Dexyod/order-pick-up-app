@@ -46,7 +46,7 @@ module.exports = (db) => {
    * Expecting user object
    * {username, email, phone, password}
    */
-  router.post("/register", (req, res) => {
+  router.post("/", (req, res) => {
     const newUser = req.body;
     dbHelper.getUserWithEmail(newUser.email)
     .then(dbChkUser => {
@@ -61,10 +61,12 @@ module.exports = (db) => {
           res.status(201).send({error: "Logon error occurd. could not create your account."});
           return;
         }
+
         req.session.userId = addedUser.id;
         const result = {
-          name:addedUser.name,
-          email: addedUser.email
+          username:addedUser.name,
+          email: addedUser.email,
+          phone: addedUser.phone
         };
         res.status(201).send(result);
       })
@@ -77,6 +79,7 @@ module.exports = (db) => {
    */
   router.post('/login', (req, res) => {
     const {email, password} = req.body;
+    //console.log(email, password);
     login(email, password)
       .then(user => {
         if (!user) {
@@ -85,11 +88,11 @@ module.exports = (db) => {
         }
         req.session.userId = user.id;
         const result = {
-          user: user.name,
-          email: user.email
+          username: user.name,
+          email: user.email,
+          phone: user.phone
         };
         res.status(201).send(result);
-        //res.redirect("/");
       })
       .catch(e => res.status(201).send({error:e.message}));
   });
