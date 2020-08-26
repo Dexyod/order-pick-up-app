@@ -40,9 +40,9 @@ $(() => {
     `);
   };
 
-  $('#cart-checkout').on('click', function(event) {
+  $('#cart-checkout').on('click', function (event) {
     const cart = JSON.parse(localStorage.getItem('cart'));
-    let formData = { items: []};
+    let formData = { items: [] };
     for (const key in cart) {
       cart[key].comment = "";
       formData.items.push(cart[key]);
@@ -52,7 +52,6 @@ $(() => {
       data: formData
     })
       .then(function (response) {
-        console.log(response)
       });
   });
 
@@ -158,6 +157,7 @@ $(() => {
     });
   const updateCartNumber = () => {
     if (localStorage.getItem('cart')) {
+      //forin add whatever is in quantity key-value
       $(".cart-number").html(Object.keys(JSON.parse(localStorage.getItem('cart'))).length);
     }
   };

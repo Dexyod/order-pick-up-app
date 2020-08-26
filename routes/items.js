@@ -28,7 +28,7 @@ module.exports = (db) => {
 
   router.get("/user-cart", (req, res) => {
     if (!req.session.userId) {
-      res.status(201).send({error: "You are not logged on. Please log on or crate an account."});
+      res.status(201).send({ error: "You are not logged on. Please log on or crate an account." });
       return;
     }
     dbHelper.getUserCart(req.session.userId)
@@ -70,7 +70,11 @@ module.exports = (db) => {
       return;
     }
     dbHelper.createOrder(req.body.items, req.session.userId)
-      .then(data => res.status(201).send(data))
+      .then((data) => {
+        messageRestaurant(data);
+        res.status(201).send(data)
+
+      })
       .catch(e => res.status(201).send({ error: e.message }));
   });
 
