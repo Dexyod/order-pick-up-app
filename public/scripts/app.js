@@ -140,6 +140,7 @@ $(() => {
         $(".error").addClass("show");
       });
   });
+
   $('#login-options').on('click', '#logout', function (event) {
     event.preventDefault();
     $.ajax('/api/users/logout', {
@@ -148,8 +149,10 @@ $(() => {
       .then(function (response) {
         console.log(response);
         $("#login-options").load(location.href + " #login-options");
-      });
+      })
+      .catch((err) => console.log(err));
   });
+
   $.ajax('/api/items/', {
     method: 'GET'
   })

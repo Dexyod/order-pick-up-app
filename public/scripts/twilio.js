@@ -41,10 +41,10 @@ const failedMessage = () => {
 }
 const messageRestaurant = (orderData) => {
   const { header, details } = orderData;
-  
-  let orderMessage = `\nOrder id: ${header.id},\n\nCustomer Phone: +1${header.phone},\n\nOrder Timestamp: ${header.start_time},\n\n`;
+
+  let orderMessage = `\nOrder id: ${header.id},\n\nCustomer Phone: +1${header.phone},\n\nOrder Timestamp: \n${header.start_time},\n\nOrder Comment: ${header.comment}\n\n`;
   details.map((item) => {
-    orderMessage += `Item Name: ${item.name},\n\nQuantity: ${item.quantity},\n\nItem Comment: ${item.comment},\n\n`;
+    orderMessage += `Item Name: ${item.name},\nQuantity: ${item.quantity},\n\n`;
   });
   client.messages
     .create({
