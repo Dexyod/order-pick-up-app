@@ -120,6 +120,7 @@ $(() => {
       method: 'GET'
     })
     .then(function (response) {
+      console.log(response);
       response.forEach((item) => {
         menuItems[item.id] = item;
         $('#menu-container').prepend(createMenuItem(item));

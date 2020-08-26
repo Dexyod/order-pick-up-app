@@ -46,7 +46,7 @@ module.exports = (db) => {
    * Expecting user object
    * {username, email, phone, password}
    */
-  router.post("/", (req, res) => {
+  router.post("/register", (req, res) => {
     const newUser = req.body;
     dbHelper.getUserWithEmail(newUser.email)
     .then(dbChkUser => {

@@ -25,7 +25,7 @@ module.exports = (db) => {
   });
 
   router.get("/user-cart", (req, res) => {
-    if (!req.session.userid) {
+    if (!req.session.userId) {
       res.status(201).send({error: "You are not logged on. Please log on or crate an account."});
       return;
     }
@@ -55,7 +55,7 @@ module.exports = (db) => {
    * expecting item object in req.body
    * items array [{id, description, quantity, price, comment}]
    */
-  router.post("/", (req, res) => {
+  router.post("/checkout", (req, res) => {
     if (!req.session.userid) {
       res.status(201).send({error: "You are not logged on. Please log on or crate an account."});
       return;
