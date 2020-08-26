@@ -45,6 +45,14 @@ const getAllItems = () => {
     .then(res => res.rows);
 };
 
+const setOrderCompleted = (orderId) => {
+  const sql = `UPDATE orders
+  SET end_time = now()
+  WHERE id = $1;`;
+
+  dbConn.query(sql, [order_id]);
+};
+
 /**
  * Get order history for the current logged on user
  * @param  userId This userd id of the loged on user
@@ -327,5 +335,6 @@ module.exports = {
   getOrderDetails,
   getUserCart,
   addToCart,
-  createOrder
+  createOrder,
+  setOrderCompleted
 }

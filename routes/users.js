@@ -28,37 +28,19 @@ module.exports = (db) => {
         return null;
       });
   }
-
-  /*router.get("/", (req, res) => {
-    db.query(`SELECT * items;`)
-      .then(data => {
-        const users = data.rows;
-        res.json({ users });
-      })
-      .catch(err => {
-        res
-          .status(500)
-          .json({ error: err.message });
-      });
-  });*/
-  //Create new user??
-  /**
-   * Expecting user object
-   * {username, email, phone, password}
-   */
   router.post("/register", (req, res) => {
     const newUser = req.body;
     dbHelper.getUserWithEmail(newUser.email)
       .then(dbChkUser => {
         if (dbChkUser) {
-          res.status(201).send({ error: "User already exist." });
+          res.status(401).send({ error: "User already exist." });
           return;
         }
         newUser.password = bcrypt.hashSync(newUser.password, constants.saltRounds);
         dbHelper.addUser(newUser)
           .then(addedUser => {
             if (!addedUser) {
-              res.status(201).send({ error: "Logon error occurd. could not create your account." });
+              res.status(401).send({ error: "Logon error occurd. could not create your account." });
               return;
             }
 
@@ -71,7 +53,7 @@ module.exports = (db) => {
             res.status(201).send(result);
           })
       })
-      .catch(e => res.status(201).send({ error: e.message }));
+      .catch(e => res.status(500).send({ error: e.message }));
   });
 
   /**
@@ -79,11 +61,10 @@ module.exports = (db) => {
    */
   router.post('/login', (req, res) => {
     const { email, password } = req.body;
-    //console.log(email, password);
     login(email, password)
       .then(user => {
         if (!user) {
-          res.status(201).send({ error: "error" });
+          res.status(401).send({ error: "Login failed." });
           return;
         }
         req.session.userId = user.id;
@@ -92,14 +73,14 @@ module.exports = (db) => {
           email: user.email,
           phone: user.phone
         };
-        res.status(201).send(result);
+        res.status(200).send(result);
       })
-      .catch(e => res.status(201).send({ error: e.message }));
+      .catch(e => res.status(500).send({ error: e.message }));
   });
 
   router.post('/logout', (req, res) => {
     req.session.userId = null;
-    res.status(201).send({});
+    res.status(200).send({});
   });
 
   return router;
