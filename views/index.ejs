@@ -181,23 +181,7 @@
                 <th scope="col">Remove</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td class="w-25">
-                  <img src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/vans.png"
-                    class="img-fluid img-thumbnail" alt="Sheep">
-                </td>
-                <td style="padding-top: 60px;">Vans Sk8-Hi MTE Shoes</td>
-                <td style="padding-top: 60px;">$89</td>
-                <td style="padding-top: 54px;" class="qty table-padding"><input type="text" class="form-control"
-                    id="input1" value="2"></td>
-                <td style="padding-top: 60px;">$178</td>
-                <td style="padding-top: 47 px;">
-                  <a href="#" class="btn btn-danger btn-sm">
-                    <i class="fa fa-times"></i>
-                  </a>
-                </td>
-              </tr>
+            <tbody id="cartItems">
             </tbody>
           </table>
           <div class="cart-total">
@@ -206,7 +190,7 @@
                 <h5>SubTotal: </h5>
               </div>
               <div class="col-2">
-                <div class="text-success">$89.00</div>
+                <div class="text-success" id="cart-subtotal">$0</div>
               </div>
             </div>
             <div class="row">
@@ -214,7 +198,7 @@
                 <h5>Fees & Taxes: </h5>
               </div>
               <div class="col-2">
-                <div class="text-success">$10000.00</div>
+                <div class="text-success" id="cart-taxes">$0</div>
               </div>
             </div>
             <div class="row">
@@ -222,7 +206,7 @@
                 <h5>Total: </h5>
               </div>
               <div class="col-2">
-                <div class="text-success">$94.00</div>
+                <div class="text-success" id="cart-total">$0</div>
               </div>
             </div>
           </div>
