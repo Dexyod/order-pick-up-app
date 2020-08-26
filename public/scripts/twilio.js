@@ -8,7 +8,7 @@ const twilioNumber = process.env.TWILIO_NUMBER;
 
 const client = require('twilio')(accountSid, authToken);
 
-const messageCustomer = (username, time, orderId, customerPhone) => {
+const messageCustomer = (username, orderId, customerPhone, time) => {
   client.messages
     .create({
       body: `Hello ${username}, Thank you for Bacon-out! Your order id is ${orderId}. The estimated time until your food is ready to pick-up is ${time} minutes! Remember kids, as our lord and saviour said, "Don't Bac-in... Bac-out."`,
@@ -30,7 +30,15 @@ const orderComplete = (username, orderId, customerPhone) => {
     .catch((error) => console.log(error.message));
 };
 
-
+const failedMessage = () => {
+  client.messages
+    .create({
+      body: `Error...\nPlease use this format:\n\nAction\tClient-Username\tOrder ID\tClient Phone\tTime(for ETA only!)\n\nExample Message ETA:\n\nETA Declan 5 4169485080 35\n\nExample Message Complete:\n\nComplete Declan 5 4169485080`,
+      from: `+1${twilioNumber}`,
+      to: `+1${restaurantPhone}`
+    })
+    .catch((error) => console.log(error.message));
+}
 const messageRestaurant = (orderData) => {
   const { header, details } = orderData;
 
@@ -49,5 +57,6 @@ const messageRestaurant = (orderData) => {
 module.exports = {
   messageCustomer,
   messageRestaurant,
-  orderComplete
+  orderComplete,
+  failedMessage
 };

@@ -7,13 +7,15 @@
 const {
   messageCustomer,
   messageRestaurant,
-  orderComplete
+  orderComplete,
+  failedMessage
 } = require('../public/scripts/twilio');
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const constants = require("../constants/constants");
 const dbHelper = require("../helpers/dbHelper.js");
+
 
 module.exports = (db) => {
   dbHelper.setDbConn(db);
@@ -46,8 +48,17 @@ module.exports = (db) => {
     .catch(e => res.status(201).send({error:e.message}));
   });
 
-  router.post("/message-client", (req, res) => {
-
+  router.post("/sms", (req, res) => {
+    const params = req.body.Body.split(' ');
+    // console.log(params);
+    // console.log(req.body)
+    if (params[0] === 'ETA') {
+      messageCustomer(params[1], params[2], params[3], params[4]);
+    } else if (params[0] === 'Complete') {
+      orderComplete(params[1], params[2], params[3]);
+    } else {
+      failedMessage();
+    }
   });
 
   /**
