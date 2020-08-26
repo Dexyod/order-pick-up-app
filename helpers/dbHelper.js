@@ -95,7 +95,7 @@ const getOrderHeaderByUserId = (userId) => {
 */
 const getOrderDetails = (order_id) => {
   const sql = `SELECT order_details.quantity, items.name, order_details.description,
-  order_details.price, items.photo_url, order_details.comment
+  order_details.price, items.photo_url
   FROM order_details
   JOIN items ON items.id = order_details.item_id
   WHERE order_id = $1;`;
@@ -115,8 +115,8 @@ const createNewOrder = (items, userId) => {
        SELECT $1, users.phone, '', now()::date, now(), NULL
        FROM users WHERE users.id = $2 RETURNING id;`;
 
-  const sql2 = `INSERT INTO order_details (order_id, item_id, description, quantity, price, comment)
-          VALUES ($1, $2, $3, $4, $5, $6);`;
+  const sql2 = `INSERT INTO order_details (order_id, item_id, description, quantity, price)
+          VALUES ($1, $2, $3, $4, $5);`;
 
   return new Promise((resolve, reject) => {
       //this code taken from https://node-postgres.com/features/transactions
@@ -126,7 +126,7 @@ const createNewOrder = (items, userId) => {
         .then(res => {
           const order_id = res.rows[0].id;
           for (item of items) {
-            const sqlParams = [order_id, item.id, item.description, item.quantity, item.price, item.comment];
+            const sqlParams = [order_id, item.id, item.description, item.quantity, item.price];
             dbConn.query(sql2, sqlParams)
             .then(() => {
 
@@ -157,9 +157,9 @@ const createNewCart = (item, userId) => {
        SELECT $1, users.phone, '', now()::date, now(), NULL
        FROM users WHERE users.id = $2 RETURNING id;`;
 
-  const sql2 = `INSERT INTO order_details (order_id, item_id, description, quantity, price, comment)
-          SELECT $1, $2, items.description, $3, items.price, $4
-          FROM items WHERE items.id = $5;`
+  const sql2 = `INSERT INTO order_details (order_id, item_id, description, quantity, price)
+          SELECT $1, $2, items.description, $3, items.price
+          FROM items WHERE items.id = $4;`
 
   return new Promise((resolve, reject) => {
     //this code taken from https://node-postgres.com/features/transactions
@@ -167,7 +167,7 @@ const createNewCart = (item, userId) => {
       .then(() => {
         dbConn.query(sql1, [userId, userId])
           .then(res => {
-            const sqlParams = [res.rows[0].id, item.id, item.quantity, item.comment, item.id];
+            const sqlParams = [res.rows[0].id, item.id, item.quantity, item.id];
             dbConn.query(sql2, sqlParams)
               .then(() => {
                 dbConn.query('COMMIT')
@@ -192,14 +192,14 @@ const createNewCart = (item, userId) => {
 const addItemToCart = (item, userId) => {
 
   //this is assuming that there are only ever on open cart for this user. this should always be correct unless something went wrong.
-  const sql = `INSERT INTO order_details (order_id, item_id, quantity, description, price, comment)
-  SELECT $1, $2, $3, items.description, items.price, $4
-  FROM items WHERE items.id = $5 RETURNING *;`
+  const sql = `INSERT INTO order_details (order_id, item_id, quantity, description, price)
+  SELECT $1, $2, $3, items.description, items.price
+  FROM items WHERE items.id = $4 RETURNING *;`
 
   //get order id of open cart.
   return getOrderHeaderByUserId(userId)
     .then(header => {
-      const sqlParams = [header.id, item.id, item.quantity, item.comment, item.id];
+      const sqlParams = [header.id, item.id, item.quantity, item.id];
       dbConn.query(sql, sqlParams)
         .then(res => res.rows);
     });

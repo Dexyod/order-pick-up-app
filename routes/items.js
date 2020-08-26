@@ -66,6 +66,7 @@ module.exports = (db) => {
    * items array [{id, description, quantity, price, comment}]
    */
   router.post("/checkout", (req, res) => {
+
     if (!req.session.userId) {
       res.status(401).send({ error: "You are not logged on. Please log on or create an account." });
       return;
