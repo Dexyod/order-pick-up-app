@@ -78,9 +78,9 @@ $(() => {
     event.preventDefault();
     const formData = $(this).serialize();
     $.ajax('/api/users/register', {
-        method: 'POST',
-        data: formData
-      })
+      method: 'POST',
+      data: formData
+    })
       .then(function (response) {
         console.log(response);
         $('#ModalRegister').modal('toggle');
@@ -94,9 +94,9 @@ $(() => {
     event.preventDefault();
     const formData = $(this).serialize();
     $.ajax('/api/users/login', {
-        method: 'POST',
-        data: formData
-      })
+      method: 'POST',
+      data: formData
+    })
       .then(function (response) {
         console.log(response);
         $('#ModalLogin').modal('toggle');
@@ -109,17 +109,18 @@ $(() => {
   $('#login-options').on('click', '#logout', function (event) {
     event.preventDefault();
     $.ajax('/api/users/logout', {
-        method: 'POST'
-      })
+      method: 'POST'
+    })
       .then(function (response) {
         console.log(response);
         $("#login-options").load(location.href + " #login-options");
       });
   });
   $.ajax('/api/items/', {
-      method: 'GET'
-    })
+    method: 'GET'
+  })
     .then(function (response) {
+      console.table(response);
       response.forEach((item) => {
         menuItems[item.id] = item;
         $('#menu-container').prepend(createMenuItem(item));

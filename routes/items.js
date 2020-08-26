@@ -22,30 +22,30 @@ module.exports = (db) => {
 
   router.get("/", (req, res) => {
     dbHelper.getAllItems()
-    .then(data => res.status(201).send(data))
-    .catch(error => res.status(201).send(error));
+      .then(data => res.status(201).send(data))
+      .catch(error => res.status(201).send(error));
   });
 
   router.get("/user-cart", (req, res) => {
     if (!req.session.userid) {
-      res.status(201).send({error: "You are not logged on. Please log on or crate an account."});
+      res.status(201).send({ error: "You are not logged on. Please log on or crate an account." });
       return;
     }
     dbHelper.getUserCart(req.session.userId)
-    .then(data => {
-      res.status(201).send(data)
-    })
-    .catch(e => res.status(201).send({error:e.message}));
+      .then(data => {
+        res.status(201).send(data)
+      })
+      .catch(e => res.status(201).send({ error: e.message }));
   });
 
   router.get("/user-history", (req, res) => {
     if (!req.session.userid) {
-      res.status(201).send({error: "You are not logged on. Please log on or crate an account."});
+      res.status(201).send({ error: "You are not logged on. Please log on or crate an account." });
       return;
     }
     dbHelper.getUserHistory(req.session.userId)
-    .then(data => res.status(201).send(data))
-    .catch(e => res.status(201).send({error:e.message}));
+      .then(data => res.status(201).send(data))
+      .catch(e => res.status(201).send({ error: e.message }));
   });
 
   router.post("/sms", (req, res) => {
@@ -68,13 +68,13 @@ module.exports = (db) => {
    */
   router.post("/", (req, res) => {
     if (!req.session.userid) {
-      res.status(201).send({error: "You are not logged on. Please log on or crate an account."});
+      res.status(201).send({ error: "You are not logged on. Please log on or crate an account." });
       return;
     }
     const items = JSON.parse(req.body.items);
     dbHelper.createOrder(items, req.session.userid)
-    .then(data => res.status(201).send(data))
-    .catch(e => res.status(201).send({error:e.message}));
+      .then(data => res.status(201).send(data))
+      .catch(e => res.status(201).send({ error: e.message }));
   });
 
   return router;
