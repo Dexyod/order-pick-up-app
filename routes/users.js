@@ -51,14 +51,14 @@ module.exports = (db) => {
     dbHelper.getUserWithEmail(newUser.email)
       .then(dbChkUser => {
         if (dbChkUser) {
-          res.status(201).send({ error: "User already exist." });
+          res.status(400).send({ error: "User already exist." });
           return;
         }
         newUser.password = bcrypt.hashSync(newUser.password, constants.saltRounds);
         dbHelper.addUser(newUser)
           .then(addedUser => {
             if (!addedUser) {
-              res.status(201).send({ error: "Logon error occurd. could not create your account." });
+              res.status(400).send({ error: "Logon error occurd. could not create your account." });
               return;
             }
 
@@ -71,7 +71,7 @@ module.exports = (db) => {
             res.status(201).send(result);
           })
       })
-      .catch(e => res.status(201).send({ error: e.message }));
+      .catch(e => res.status(400).send({ error: e.message }));
   });
 
   /**
@@ -83,7 +83,7 @@ module.exports = (db) => {
     login(email, password)
       .then(user => {
         if (!user) {
-          res.status(201).send({ error: "error" });
+          res.status(400).send({ error: "error" });
           return;
         }
         req.session.userId = user.id;
@@ -94,7 +94,7 @@ module.exports = (db) => {
         };
         res.status(201).send(result);
       })
-      .catch(e => res.status(201).send({ error: e.message }));
+      .catch(e => res.status(400).send({ error: e.message }));
   });
 
   router.post('/logout', (req, res) => {

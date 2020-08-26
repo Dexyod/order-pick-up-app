@@ -40,7 +40,7 @@ module.exports = (db) => {
 
   router.get("/user-history", (req, res) => {
     if (!req.session.userId) {
-      res.status(201).send({error: "You are not logged on. Please log on or crate an account."});
+      res.status(201).send({ error: "You are not logged on. Please log on or crate an account." });
       return;
     }
     dbHelper.getUserHistory(req.session.userId)
@@ -66,7 +66,7 @@ module.exports = (db) => {
    */
   router.post("/checkout", (req, res) => {
     if (!req.session.userId) {
-      res.status(201).send({ error: "You are not logged on. Please log on or create an account." });
+      res.status(400).send({ error: "You are not logged on. Please log on or create an account." });
       return;
     }
     dbHelper.createOrder(req.body.items, req.session.userId)
@@ -75,7 +75,7 @@ module.exports = (db) => {
         res.status(201).send(data)
 
       })
-      .catch(e => res.status(201).send({ error: e.message }));
+      .catch(e => res.status(400).send({ error: e.message }));
   });
 
   return router;

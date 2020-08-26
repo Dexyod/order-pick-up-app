@@ -16,6 +16,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/scripts/validate.js"></script>
   <script type="text/javascript" src="/scripts/app.js"></script>
   <script type="text/javascript" src="/scripts/scroll.js"></script>
 </head>
@@ -45,11 +46,13 @@
     </nav>
   </header>
 
+
   <%- include('partials/registerModal') %>
 
   <%- include('partials/loginModal') %>
   <!-- add main container here -->
   <main class="landing-page">
+   
     <div class="welcome-container">
       <p>Welcome to Kevin Bacout!</p>
       <a class="btn btn-light" href="#menu">Order Now!</a>
@@ -67,31 +70,31 @@
         </p>
       </div>
       <div id="menu-container">
-      <div class="col-12 mt-4">
-        <h3 class="text-center">Starters</h3>
-        <hr class="accent my-5" />
+        <div class="col-12 mt-4">
+          <h3 class="text-center">Starters</h3>
+          <hr class="accent my-5" />
+        </div>
+        <div class="card-columns col-12" id="starter-container">
+        </div>
+        <div class="col-12 mt-4">
+          <h3 class="text-center">Mains</h3>
+          <hr class="accent my-5" />
+        </div>
+        <div class="card-columns col-12" id="main-container">
+        </div>
+        <div class="col-12 mt-4">
+          <h3 class="text-center">Deserts</h3>
+          <hr class="accent my-5" />
+        </div>
+        <div class="card-columns col-12" id="desert-container">
+        </div>
+        <div class="col-12 mt-4">
+          <h3 class="text-center">Drinks</h3>
+          <hr class="accent my-5" />
+        </div>
+        <div class="card-columns col-12" id="drink-container">
+        </div>
       </div>
-      <div class="card-columns col-12" id="starter-container">
-      </div>
-      <div class="col-12 mt-4">
-        <h3 class="text-center">Mains</h3>
-        <hr class="accent my-5" />
-      </div>
-      <div class="card-columns col-12" id="main-container">
-      </div>
-      <div class="col-12 mt-4">
-        <h3 class="text-center">Deserts</h3>
-        <hr class="accent my-5" />
-      </div>
-      <div class="card-columns col-12" id="desert-container">
-      </div>
-      <div class="col-12 mt-4">
-        <h3 class="text-center">Drinks</h3>
-        <hr class="accent my-5" />
-      </div>
-      <div class="card-columns col-12" id="drink-container">
-      </div>
-    </div>
     </div>
   </div>
   <%- include('partials/cartModal') %>

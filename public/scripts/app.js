@@ -52,7 +52,14 @@ $(() => {
       data: formData
     })
       .then(function (response) {
-      });
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+        validate('Please login to checkout!');
+        $(".error").slideDown("slow");
+        $(".error").addClass("show");
+      })
   });
 
   $('#cartItems').on('click', '#remove-item-button', function (event) {
@@ -103,6 +110,12 @@ $(() => {
         $('#register-form').each(function () {
           this.reset();
         });
+      })
+      .catch((err) => {
+        console.log(err);
+        validate('Error! E-mail in use!');
+        $(".error").slideDown("slow");
+        $(".error").addClass("show");
       });
   });
   $('#login-form').submit(function (event) {
@@ -119,6 +132,12 @@ $(() => {
         $('#login-form').each(function () {
           this.reset();
         });
+      })
+      .catch((err) => {
+        console.log(err);
+        validate('Error! Incorrect e-mail/password!');
+        $(".error").slideDown("slow");
+        $(".error").addClass("show");
       });
   });
   $('#login-options').on('click', '#logout', function (event) {
@@ -154,7 +173,8 @@ $(() => {
             break;
         }
       });
-    });
+    })
+    .catch((err) => console.log(err));
   const updateCartNumber = () => {
     if (localStorage.getItem('cart')) {
       //forin add whatever is in quantity key-value
