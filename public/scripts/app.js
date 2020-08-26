@@ -40,6 +40,25 @@ $(() => {
     `);
   };
 
+  $('#cart-checkout').on('click', function(event) {
+    const cart = JSON.parse(localStorage.getItem('cart'));
+    let formData = { items: []};
+    for (const key in cart) {
+      cart[key].comment = "";
+      formData.items.push(cart[key]);
+    }
+    // formData = JSON.stringify(formData);
+    // let parsedData = JSON.parse(formData);
+    // console.log(parsedData.items);
+    $.ajax('/api/items/checkout', {
+      method: 'POST',
+      data: formData
+    })
+      .then(function (response) {
+        console.log(response)
+      });
+  });
+
   $('#cartItems').on('click', '#remove-item-button', function (event) {
     let cart = JSON.parse(localStorage.getItem('cart'));
     delete cart[this.name];
