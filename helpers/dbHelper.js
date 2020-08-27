@@ -88,6 +88,22 @@ const getOrderHeaderByUserId = (userId) => {
   return dbConn.query(sql, [userId])
     .then(res => res.rows[0]);
 };
+
+/**
+ * Get active order cart header by specific order id
+ * @param  orderId This userd id of the loged on user
+ * this method will be called by getUserCart below
+ */
+const getOrderHeaderByOrderId = (orderId) => {
+  const sql = `SELECT id, phone, comment, order_date, start_time
+  FROM orders
+  WHERE id = $1
+  AND end_time IS NULL;`;
+
+  return dbConn.query(sql, [orderId])
+    .then(res => res.rows[0]);
+};
+
 /**
  * Get cart detail for the logged on user
  * @param  order_id Order id from the cart header
@@ -134,7 +150,7 @@ const createNewOrder = (items, userId, orderComment) => {
               continue;
             }
             dbConn.query('COMMIT')
-              .then(() => { resolve(true); });
+              .then(() => { resolve(order_id); });
           });
       })
       .catch(e => {
@@ -231,6 +247,30 @@ const getUserCart = (userId) => {
 };
 
 /**
+ * get user cart by the order id of the cart.
+ * @param {*} orderId
+ */
+const getUserCartByOrderId = (orderId) => {
+
+  return new Promise((resolve, reject) => {
+    getOrderHeaderByOrderId(orderId)
+      .then(header => {
+        if (!header) {
+          resolve({});
+        }
+        getOrderDetails(header.id)
+          .then(details => {
+            if (!details) {
+              resolve({})
+            }
+            //console.log("returning header, details", header, details);
+            resolve({header, details });
+          });
+      });
+  });
+};
+
+/**
  * This method adds a single item to the cart or a create a new cart with  single item.
  * @param {*} item
  * @param {*} userId
@@ -274,7 +314,7 @@ const createOrder = (items, userId, orderComment) => {
   return new Promise((resolve, reject) => {
     createNewOrder(items, userId, orderComment)
       .then(result => {
-        getUserCart(userId)
+        getUserCartByOrderId(result)
           .then(cartData => {
             resolve(cartData);
           });

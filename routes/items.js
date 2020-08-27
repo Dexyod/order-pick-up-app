@@ -67,7 +67,7 @@ module.exports = (db) => {
   /**
    * Add item to cart.
    * expecting item object in req.body
-   * items array [{id, description, quantity, price, comment}]
+   * items array [{id, description, quantity, price}]
    */
   router.post("/checkout", (req, res) => {
 
@@ -75,7 +75,6 @@ module.exports = (db) => {
       res.status(400).send({ error: "You are not logged on. Please log on or create an account." });
       return;
     }
-    console.log(req.body.comment);
     dbHelper.createOrder(req.body.items, req.session.userId, req.body.comment)
       .then((data) => {
         messageRestaurant(data);
