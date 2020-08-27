@@ -66,7 +66,7 @@ const getUserHistory = (userId, limit = 4) => {
   JOIN users ON users.id = orders.user_id
   WHERE users.id = $1
   AND orders.end_time IS NOT NULL
-  ORDER BY orders.order_date
+  ORDER BY orders.order_date DESC
   LIMIT $2;`;
 
   return dbConn.query(sql, [userId, limit])
@@ -263,7 +263,7 @@ const getUserCartByOrderId = (orderId) => {
               resolve({})
             }
             //console.log("returning header, details", header, details);
-            resolve({header, details });
+            resolve({ header, details });
           });
       });
   });

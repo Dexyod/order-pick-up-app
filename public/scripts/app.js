@@ -252,15 +252,14 @@ $(() => {
     </div>
     `);
   };
-  //End of History menu item
-  //history section
+
   const getUserHistory = () => {
     $.ajax('/api/items/user-history', {
       method: 'GET'
     })
       .then(function (response) {
         response.forEach((item) => {
-          // console.log(item);
+
           item.order_date = item.order_date.slice(0, 10);
           menuItems[item.id] = item;
           $('#history-container').append(createHistoryMenuItem(item));
@@ -268,7 +267,7 @@ $(() => {
       })
       .catch((err) => console.log(err));
   };
-  //end of history section
+
   updateCartNumber();
   updateCartItems();
   getUserHistory();
