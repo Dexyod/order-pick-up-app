@@ -23,12 +23,12 @@ module.exports = (db) => {
   router.get("/", (req, res) => {
     dbHelper.getAllItems()
       .then(data => res.status(200).send(data))
-      .catch(error => res.status(500).send({error: error.message}));
+      .catch(error => res.status(500).send({ error: error.message }));
   });
 
   router.get("/user-cart", (req, res) => {
     if (!req.session.userId) {
-      res.status(401).send({error: "You are not logged on. Please log on or crate an account."});
+      res.status(401).send({ error: "You are not logged on. Please log on or crate an account." });
       return;
     }
     dbHelper.getUserCart(req.session.userId)
@@ -40,7 +40,7 @@ module.exports = (db) => {
 
   router.get("/user-history", (req, res) => {
     if (!req.session.userId) {
-      res.status(401).send({error: "You are not logged on. Please log on or crate an account."});
+      res.status(401).send({ error: "You are not logged on. Please log on or crate an account." });
       return;
     }
     dbHelper.getUserHistory(req.session.userId)
@@ -50,14 +50,18 @@ module.exports = (db) => {
 
   router.post("/sms", (req, res) => {
     const params = req.body.Body.split(' ');
-    if (params[0] === 'ETA') {
-      messageCustomer(params[1], params[2], params[3], params[4]);
-    } else if (params[0] === 'Complete') {
-      orderComplete(params[1], params[2], params[3]);
-      dbHelper.setOrderCompleted(params[2]);
+    const [action, username, order_id, customerPhone, time] = params;
+    // console.log(res);
+    if (action === 'ETA') {
+      console.log(time);
+      messageCustomer(username, order_id, customerPhone, time);
+    } else if (action === 'Complete') {
+      orderComplete(username, order_id, customerPhone);
+      dbHelper.setOrderCompleted(order_id);
     } else {
       failedMessage();
     }
+    res.status(200).send(time);
   });
 
   /**

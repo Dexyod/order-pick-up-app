@@ -15,7 +15,7 @@ const messageCustomer = (username, orderId, customerPhone, time) => {
       from: `+1${twilioNumber}`,
       to: `+1${customerPhone}`
     })
-    .then(message => console.log(message))
+    .then(message => console.log(message.body))
     .catch((error) => console.log(error.message));
 };
 
