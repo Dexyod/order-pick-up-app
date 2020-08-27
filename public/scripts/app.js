@@ -191,12 +191,18 @@ $(() => {
       });
     })
     .catch((err) => console.log(err));
+
   const updateCartNumber = () => {
     if (localStorage.getItem('cart')) {
-      //forin add whatever is in quantity key-value
-      $(".cart-number").html(Object.keys(JSON.parse(localStorage.getItem('cart'))).length);
+      const cart = JSON.parse(localStorage.getItem('cart'));
+      let total = 0;
+      for (const key in cart) {
+        total += Number(cart[key].quantity);
+      }
+      $(".cart-number").html(total);
     }
   };
+
   const updateCartItems = () => {
     let subTotal = 0;
     $("#cartItems").empty();
