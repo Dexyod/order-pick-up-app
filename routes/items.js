@@ -15,6 +15,8 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const constants = require("../constants/constants");
 const dbHelper = require("../helpers/dbHelper.js");
+const { getUserHistory } = require('../helpers/dbHelper.js');
+
 
 
 module.exports = (db) => {
@@ -40,7 +42,7 @@ module.exports = (db) => {
 
   router.get("/user-history", (req, res) => {
     if (!req.session.userId) {
-      res.status(401).send({ error: "You are not logged on. Please log on or crate an account." });
+      res.status(401).send({ error: "You are not logged in. Please log in or create an account!" });
       return;
     }
     dbHelper.getUserHistory(req.session.userId)
@@ -58,6 +60,7 @@ module.exports = (db) => {
     } else if (action === 'Complete') {
       orderComplete(username, order_id, customerPhone);
       dbHelper.setOrderCompleted(order_id);
+      
     } else {
       failedMessage();
     }

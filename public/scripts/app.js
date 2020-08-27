@@ -147,6 +147,7 @@ $(() => {
         $("#login-options").load(location.href + " #login-options");
         $('#login-form').each(function () {
           this.reset();
+          getUserHistory();
         });
       })
       .catch((err) => {
@@ -165,6 +166,7 @@ $(() => {
       .then(function (response) {
         console.log(response);
         $("#login-options").load(location.href + " #login-options");
+        $('#history-container').empty();
       })
       .catch((err) => console.log(err));
   });
@@ -226,6 +228,44 @@ $(() => {
       $("#cart-total").html(`$${(subTotal + taxes).toFixed(2)}`);
     }
   };
+  // History menu item
+  const createHistoryMenuItem = (item) => {
+    return (`
+    <div class="card card-body d-flex align-items-center">
+      <h6>${item.name}</h6>
+      <span class="font-weight-bold">$${(item.price / 100).toFixed(2)}</span>
+      <img src="${item.photo_url}" alt=""
+        class="img-thumbnail card-img-top">
+      <p class="small item-description">
+        ${item.description}
+      </p>
+      <div>Ordered On: ${item.order_date}</div>
+      <div>Quantity Ordered: ${item.quantity}</div>
+      <div>
+        <button type="button" class="btn btn-outline-dark mr-3" id="add-to-cart-button" name="${item.id}">Add To Cart
+        </button>
+      </div>
+    </div>
+    `);
+  };
+  //End of History menu item
+  //history section
+  const getUserHistory = () => {
+    $.ajax('/api/items/user-history', {
+      method: 'GET'
+    })
+      .then(function (response) {
+        response.forEach((item) => {
+          // console.log(item);
+          item.order_date = item.order_date.slice(0, 10);
+          menuItems[item.id] = item;
+          $('#history-container').append(createHistoryMenuItem(item));
+        });
+      })
+      .catch((err) => console.log(err));
+  };
+  //end of history section
   updateCartNumber();
   updateCartItems();
+  getUserHistory();
 });

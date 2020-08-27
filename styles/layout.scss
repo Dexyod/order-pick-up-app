@@ -42,6 +42,13 @@ main.landing-page {
     box-shadow: 1px 3px lightgray;
   }
 }
+#login-btn{
+  margin-right: 10px;
+}
+#login-options{
+  display: contents;
+  padding-right: 10px;
+}
 #nav-brand {
   color: #000;
 }
@@ -129,7 +136,7 @@ label{
   }
 }
 .card{
-  height: 480px;
+  height: 570px;
   justify-content: space-around;
   h6{
     border: 1px solid #d2d2d2;
@@ -138,7 +145,9 @@ label{
     text-align: center;
   }
 }
-
+#history-container{
+  display: flex;
+}
 .container {
   padding: 2rem 0rem;
 }
