@@ -137,7 +137,7 @@ const createNewOrder = (items, userId, orderComment) => {
     //this code taken from https://node-postgres.com/features/transactions
     dbConn.query('BEGIN')
       .then(() => {
-        dbConn.query(sql1, [userId, userId])
+        dbConn.query(sql1, [userId, userId, orderComment])
           .then(res => {
             const order_id = res.rows[0].id;
             for (item of items) {

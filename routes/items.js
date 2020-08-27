@@ -60,7 +60,7 @@ module.exports = (db) => {
     } else if (action === 'Complete') {
       orderComplete(username, order_id, customerPhone);
       dbHelper.setOrderCompleted(order_id);
-      
+
     } else {
       failedMessage();
     }
