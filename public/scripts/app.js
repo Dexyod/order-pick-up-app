@@ -28,8 +28,11 @@ $(() => {
       </td>
       <td style="padding-top: 60px;">${item.name}</td>
       <td style="padding-top: 60px;">$${(item.price / 100).toFixed(2)}</td>
-      <td style="padding-top: 54px;  width: 69px;" class="qty table-padding"><input type="text" class="form-control"
-          id="cart-quantity" name="${item.id}" value="${item.quantity}"></td>
+      <td style="padding-top: 25px;">
+      <div><i class="fa fa-plus hover" id="increment-quantity" name="${item.id}"></i></div>
+      <div style="margin: 10px 0">${item.quantity}</div>
+      <div><i class="fa fa-minus hover" id="decrement-quantity" name="${item.id}"></i></div>
+      </td>
       <td style="padding-top: 60px;">$${(item.price * item.quantity / 100).toFixed(2)}</td>
       <td style="padding-top: 47px;">
         <a href="#" id="remove-item-button" name="${item.id}" class="btn btn-danger btn-sm">
@@ -70,14 +73,24 @@ $(() => {
     updateCartItems();
   });
 
-  $('#cartItems').on('input', '#cart-quantity', function (event) {
+  $('#cartItems').on('click', '#increment-quantity', function (event) {
     let cart = JSON.parse(localStorage.getItem('cart'));
-    cart[this.name].quantity = this.value;
+    if (cart[$(this).attr('name')].quantity <= 50) {
+      cart[$(this).attr('name')].quantity++;
+    }
     localStorage.setItem('cart', JSON.stringify(cart));
     updateCartNumber();
     updateCartItems();
-    let newVal = $(`#cart-quantity[name="${this.name}"]`).val();
-    $(`#cart-quantity[name="${this.name}"]`).focus().val("").val(newVal);
+  });
+
+  $('#cartItems').on('click', '#decrement-quantity', function (event) {
+    let cart = JSON.parse(localStorage.getItem('cart'));
+    if (cart[$(this).attr('name')].quantity > 1) {
+      cart[$(this).attr('name')].quantity--;
+    }
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartNumber();
+    updateCartItems();
   });
 
   $('#menu-container').on('click', '#add-to-cart-button', function (event) {
