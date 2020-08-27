@@ -31,6 +31,7 @@
         <div class="navbar-nav" id="login-options">
           <% if(user) { %>
           <%- include('partials/logoutHeader') %>
+          <a class="navbar-brand" id="nav-brand" href="#history-container">Recent Orders</a>
           <% } else { %>
           <%- include('partials/loginHeader') %>
           <% } %>
@@ -52,7 +53,7 @@
   <%- include('partials/loginModal') %>
   <!-- add main container here -->
   <main class="landing-page">
-   
+
     <div class="welcome-container">
       <p>Welcome to Kevin Bacout!</p>
       <a class="btn btn-light" href="#menu">Order Now!</a>
@@ -93,6 +94,12 @@
           <hr class="accent my-5" />
         </div>
         <div class="card-columns col-12" id="drink-container">
+        </div>
+        <div class="col-12 mt-4">
+          <h3 class="text-center">Recently Ordered</h3>
+          <hr class="accent my-5" />
+        </div>
+        <div class="card-columns col-12" id="history-container">
         </div>
       </div>
     </div>
