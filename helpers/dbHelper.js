@@ -59,12 +59,11 @@ const setOrderCompleted = (order_id) => {
  * @param limit. how may records to return. default to 4
  */
 const getUserHistory = (userId, limit = 4) => {
-  const sql = `SELECT order_details.quantity, items.name, order_details.description,
-  order_details.price, items.photo_url
-  FROM order_details
+  const sql = `SELECT items.id, items.name, order_details.quantity, items.description, items.category, items.price, items.photo_url, orders.order_date
+  FROM items
+  JOIN order_details ON order_details.item_id = items.id
   JOIN orders ON orders.id = order_details.order_id
   JOIN users ON users.id = orders.user_id
-  JOIN items ON items.id = order_details.item_id
   WHERE users.id = $1
   AND orders.end_time IS NOT NULL
   ORDER BY orders.order_date
@@ -122,13 +121,13 @@ const createNewOrder = (items, userId, orderComment) => {
     //this code taken from https://node-postgres.com/features/transactions
     dbConn.query('BEGIN')
       .then(() => {
-        dbConn.query(sql1, [userId, userId, orderComment])
-        .then(res => {
-          const order_id = res.rows[0].id;
-          for (item of items) {
-            const sqlParams = [order_id, item.id, item.description, item.quantity, item.price];
-            dbConn.query(sql2, sqlParams)
-            .then(() => {
+        dbConn.query(sql1, [userId, userId])
+          .then(res => {
+            const order_id = res.rows[0].id;
+            for (item of items) {
+              const sqlParams = [order_id, item.id, item.description, item.quantity, item.price];
+              dbConn.query(sql2, sqlParams)
+                .then(() => {
 
                 });
               continue;
@@ -154,8 +153,8 @@ const createNewOrder = (items, userId, orderComment) => {
 const createNewCart = (item, userId) => {
 
   const sql1 = `INSERT INTO orders (user_id, phone, comment, order_date, start_time, end_time)
-       SELECT $1, users.phone, '', now()::date, now(), NULL
-       FROM users WHERE users.id = $2 RETURNING id;`;
+      SELECT $1, users.phone, '', now()::date, now(), NULL
+      FROM users WHERE users.id = $2 RETURNING id;`;
 
   const sql2 = `INSERT INTO order_details (order_id, item_id, description, quantity, price)
           SELECT $1, $2, items.description, $3, items.price
