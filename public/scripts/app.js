@@ -50,6 +50,7 @@ $(() => {
       cart[key].comment = "";
       formData.items.push(cart[key]);
     }
+    formData.comment = $('#cart-comment').val();
     $.ajax('/api/items/checkout', {
       method: 'POST',
       data: formData
@@ -59,6 +60,7 @@ $(() => {
         localStorage.removeItem("cart");
         updateCartNumber();
         updateCartItems();
+        $('#cart-comment').val("");
       })
       .catch((err) => {
         console.log(err);
@@ -203,6 +205,8 @@ $(() => {
         total += Number(cart[key].quantity);
       }
       $(".cart-number").html(total);
+    } else {
+      $(".cart-number").html("0");
     }
   };
 

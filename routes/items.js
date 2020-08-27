@@ -75,10 +75,11 @@ module.exports = (db) => {
       res.status(400).send({ error: "You are not logged on. Please log on or create an account." });
       return;
     }
-    dbHelper.createOrder(req.body.items, req.session.userId)
+    console.log(req.body.comment);
+    dbHelper.createOrder(req.body.items, req.session.userId, req.body.comment)
       .then((data) => {
         messageRestaurant(data);
-        res.status(201).send(data)
+        res.status(201).send(data);
 
       })
       .catch(e => res.status(500).send({ error: e.message }));

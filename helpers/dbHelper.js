@@ -109,10 +109,10 @@ const getOrderDetails = (order_id) => {
  * @param {*} items [{id, description, quantity, price, comment}]
  * @param {*} userId
  */
-const createNewOrder = (items, userId) => {
+const createNewOrder = (items, userId, orderComment) => {
 
   const sql1 = `INSERT INTO orders (user_id, phone, comment, order_date, start_time, end_time)
-       SELECT $1, users.phone, '', now()::date, now(), NULL
+       SELECT $1, users.phone, $3, now()::date, now(), NULL
        FROM users WHERE users.id = $2 RETURNING id;`;
 
   const sql2 = `INSERT INTO order_details (order_id, item_id, description, quantity, price)
@@ -122,7 +122,7 @@ const createNewOrder = (items, userId) => {
     //this code taken from https://node-postgres.com/features/transactions
     dbConn.query('BEGIN')
       .then(() => {
-        dbConn.query(sql1, [userId, userId])
+        dbConn.query(sql1, [userId, userId, orderComment])
         .then(res => {
           const order_id = res.rows[0].id;
           for (item of items) {
@@ -269,10 +269,10 @@ const addToCart = (item, userId) => {
  *
  * Expecting items array.
  */
-const createOrder = (items, userId) => {
+const createOrder = (items, userId, orderComment) => {
 
   return new Promise((resolve, reject) => {
-    createNewOrder(items, userId)
+    createNewOrder(items, userId, orderComment)
       .then(result => {
         getUserCart(userId)
           .then(cartData => {
