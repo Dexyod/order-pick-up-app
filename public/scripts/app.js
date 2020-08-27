@@ -211,9 +211,9 @@ $(() => {
     $("#cartItems").empty();
     if (!localStorage.getItem('cart')) {
       $("#cartItems").html("<p>Cart is empty!</p>");
-      $("#cart-subtotal").html(0);
-      $("#cart-taxes").html(0);
-      $("#cart-total").html(0);
+      $("#cart-subtotal").html("$0");
+      $("#cart-taxes").html("$0");
+      $("#cart-total").html("$0");
     } else {
       const cart = JSON.parse(localStorage.getItem('cart'));
       for (const key in cart) {
