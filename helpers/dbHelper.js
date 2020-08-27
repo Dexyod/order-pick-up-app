@@ -1,5 +1,5 @@
-const { resolveInclude } = require("ejs");
-const utils = require("./utils");
+//const { resolveInclude } = require("ejs");
+//const utils = require("./utils");
 
 let dbConn;
 
@@ -59,7 +59,19 @@ const setOrderCompleted = (order_id) => {
  * @param limit. how may records to return. default to 4
  */
 const getUserHistory = (userId, limit = 4) => {
-  const sql = `SELECT order_details.quantity, items.name, order_details.description,
+
+  //const sql = `id, name, description, category, price, photo_url
+
+  const sql = `SELECT DISTINCT items.id, items.name, items.description, items.category, items.price, items.photo_url, orders.order_date
+  FROM items
+  JOIN order_details ON order_details.item_id = items.id
+  JOIN orders ON orders.id = order_details.order_id
+  JOIN users ON users.id = orders.user_id
+  WHERE users.id = $1
+  AND orders.end_time IS NOT NULL
+  ORDER BY orders.order_date
+  LIMIT $2;`;
+/*    const sql = `SELECT order_details.quantity, items.name, order_details.description,
   order_details.price, items.photo_url
   FROM order_details
   JOIN orders ON orders.id = order_details.order_id
@@ -68,7 +80,7 @@ const getUserHistory = (userId, limit = 4) => {
   WHERE users.id = $1
   AND orders.end_time IS NOT NULL
   ORDER BY orders.order_date
-  LIMIT $2;`;
+  LIMIT $2;`;  */
 
   return dbConn.query(sql, [userId, limit])
     .then(res => res.rows);
@@ -86,6 +98,21 @@ const getOrderHeaderByUserId = (userId) => {
   AND end_time IS NULL;`;
 
   return dbConn.query(sql, [userId])
+    .then(res => res.rows[0]);
+};
+
+/**
+ * Get active order cart header by specific order id
+ * @param  orderId This userd id of the loged on user
+ * this method will be called by getUserCart below
+ */
+const getOrderHeaderByOrderId = (orderId) => {
+  const sql = `SELECT id, phone, comment, order_date, start_time
+  FROM orders
+  WHERE id = $1
+  AND end_time IS NULL;`;
+
+  return dbConn.query(sql, [orderId])
     .then(res => res.rows[0]);
 };
 /**
@@ -134,7 +161,7 @@ const createNewOrder = (items, userId) => {
               continue;
             }
             dbConn.query('COMMIT')
-              .then(() => { resolve(true); });
+              .then(() => { resolve(order_id); });
           });
       })
       .catch(e => {
@@ -231,6 +258,29 @@ const getUserCart = (userId) => {
 };
 
 /**
+ * get user cart by the order id of the cart.
+ * @param {*} orderId
+ */
+const getUserCartByOrderId = (orderId) => {
+
+  return new Promise((resolve, reject) => {
+    getOrderHeaderByOrderId(orderId)
+      .then(header => {
+        if (!header) {
+          resolve({});
+        }
+        getOrderDetails(header.id)
+          .then(details => {
+            if (!details) {
+              resolve({})
+            }
+            //console.log("returning header, details");//, header, details);
+            resolve({ header, details });
+          });
+      });
+  });
+};
+/**
  * This method adds a single item to the cart or a create a new cart with  single item.
  * @param {*} item
  * @param {*} userId
@@ -274,7 +324,7 @@ const createOrder = (items, userId) => {
   return new Promise((resolve, reject) => {
     createNewOrder(items, userId)
       .then(result => {
-        getUserCart(userId)
+        getUserCartByOrderId(result)
           .then(cartData => {
             resolve(cartData);
           });

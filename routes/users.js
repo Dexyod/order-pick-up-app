@@ -20,10 +20,13 @@ module.exports = (db) => {
   * @param {String} password encrypted
   */
   const login = function (email, password) {
+    console.log("password", password);
     return dbHelper.getUserWithEmail(email)
       .then(user => {
-        if (bcrypt.compareSync(password, user.password)) {
-          return user;
+        if (user) {
+          if (bcrypt.compareSync(password, user.password)) {
+            return user;
+          }
         }
         return null;
       });

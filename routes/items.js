@@ -43,8 +43,15 @@ module.exports = (db) => {
       res.status(401).send({error: "You are not logged on. Please log on or crate an account."});
       return;
     }
-    dbHelper.getUserHistory(req.session.userId)
+/*     dbHelper.getUserHistory(req.session.userId)
       .then(data => res.status(200).send(data))
+      .catch(e => res.status(500).send({ error: e.message })); */
+
+      dbHelper.getUserHistory(req.session.userId)
+      .then(data => {
+
+        res.status(200).send(data)
+      })
       .catch(e => res.status(500).send({ error: e.message }));
   });
 

@@ -18,7 +18,26 @@ $(() => {
     </div>
     `);
   };
-
+  // History menu item
+  const createHistoryMenuItem = (item) => {
+    return (`
+    <div class="card card-body d-flex align-items-center">
+    <h6>${item.name}</h6>
+    <span class="font-weight-bold">$${(item.price / 100).toFixed(2)}</span>
+    <img src="${item.photo_url}" alt=""
+      class="img-thumbnail card-img-top">
+    <p class="small item-description">
+      ${item.description}
+    </p>
+    <div>
+    <button type="button" class="btn btn-outline-dark mr-3" id="add-to-cart-button" name="${item.id}">
+      Add To Cart
+    </button>
+    </div>
+    </div>
+    `);
+  };
+  //End of History menu item
   const createCartItem = (item) => {
     return (`
     <tr>
@@ -132,6 +151,9 @@ $(() => {
         $('#login-form').each(function () {
           this.reset();
         });
+        // get user history
+        getUserHistory();
+        //end of user history
       })
       .catch((err) => {
         console.log(err);
@@ -178,6 +200,23 @@ $(() => {
       });
     })
     .catch((err) => console.log(err));
+  //history section
+  const getUserHistory = () => {
+    $.ajax('/api/items/user-history', {
+      method: 'GET'
+    })
+      .then(function (response) {
+        response.forEach((item) => {
+          //These items are comming back with order date field. We are checking to only add items that are actually on the menu
+          if (menuItems[item.id]) {
+            $('#history-container').prepend(createHistoryMenuItem(menuItems[item.id]));
+          }
+        });
+      })
+      .catch((err) => console.log(err));
+  };
+  //end of history section
+
   const updateCartNumber = () => {
     if (localStorage.getItem('cart')) {
       //forin add whatever is in quantity key-value
@@ -203,4 +242,7 @@ $(() => {
   };
   updateCartNumber();
   updateCartItems();
+  //user history
+  getUserHistory();
+  //end of user history
 });
