@@ -4,7 +4,12 @@ The main goal of this project was to demonstrate an app that can be quickly util
 ordering and pickup of merchandise. You can reach your customer without the need for a brick and morter store front that is now mostly shuttered due to COVID-19. This is demonstrated with our 'Kevin Bacout' app, a ficticious bacon restaurant. The app displays a vibrant but simple interface that will be simple for merchant to setup and for eager customer to use to place orders. The app will seamlessly communicate via text messages between you the merchant and your customers whenever an order is placed on your site. The cost of setup is very minimal in terms of time and expertise needed from you the merchant. We have taken care of all the complexities for you. Give a us a few minutes of your time and we will demonstrate how this app can open many opertunities to reach your customers more effectively.
 
 ## Some screenshots
-
+!["Front page1"](https://github.com/Dexyod/midterm/blob/master/docs/appPage1.png)
+!["User Login"](https://github.com/Dexyod/midterm/blob/master/docs/login.png)
+!["User Registration"](https://github.com/Dexyod/midterm/blob/master/docs/register.png)
+!["Our menu"](https://github.com/Dexyod/midterm/blob/master/docs/ourMenu.png)
+!["Recent orders"](https://github.com/Dexyod/midterm/blob/master/docs/recentOrders.png)
+!["Checkout"](https://github.com/Dexyod/midterm/blob/master/docs/checkout.png)
 
 ## Dependencies
 
