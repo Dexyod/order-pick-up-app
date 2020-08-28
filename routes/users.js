@@ -19,7 +19,7 @@ module.exports = (db) => {
   * @param {String} email
   * @param {String} password encrypted
   */
-  const login = function (email, password) {
+  const login = function(email, password) {
     return dbHelper.getUserWithEmail(email)
       .then(user => {
         if (bcrypt.compareSync(password, user.password)) {
@@ -27,7 +27,7 @@ module.exports = (db) => {
         }
         return null;
       });
-  }
+  };
   router.post("/register", (req, res) => {
     const newUser = req.body;
     dbHelper.getUserWithEmail(newUser.email)
@@ -51,7 +51,7 @@ module.exports = (db) => {
               phone: addedUser.phone
             };
             res.status(201).send(result);
-          })
+          });
       })
       .catch(e => res.status(500).send({ error: e.message }));
   });

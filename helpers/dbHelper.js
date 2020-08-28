@@ -1,5 +1,4 @@
 const { resolveInclude } = require("ejs");
-const utils = require("./utils");
 
 let dbConn;
 
@@ -45,12 +44,12 @@ const getAllItems = () => {
     .then(res => res.rows);
 };
 
-const setOrderCompleted = (order_id) => {
+const setOrderCompleted = (orderId) => {
   const sql = `UPDATE orders
   SET end_time = now()
   WHERE id = $1;`;
 
-  dbConn.query(sql, [order_id]);
+  dbConn.query(sql, [orderId]);
 };
 
 /**
@@ -105,17 +104,17 @@ const getOrderHeaderByOrderId = (orderId) => {
 
 /**
  * Get cart detail for the logged on user
- * @param  order_id Order id from the cart header
+ * @param  orderId Order id from the cart header
  * this method will be called by getUserCart below.
 */
-const getOrderDetails = (order_id) => {
+const getOrderDetails = (orderId) => {
   const sql = `SELECT order_details.quantity, items.name, order_details.description,
   order_details.price, items.photo_url
   FROM order_details
   JOIN items ON items.id = order_details.item_id
   WHERE order_id = $1;`;
 
-  return dbConn.query(sql, [order_id])
+  return dbConn.query(sql, [orderId])
     .then(res => res.rows);
 };
 
@@ -134,22 +133,23 @@ const createNewOrder = (items, userId, orderComment) => {
           VALUES ($1, $2, $3, $4, $5);`;
 
   return new Promise((resolve, reject) => {
-    //this code taken from https://node-postgres.com/features/transactions
     dbConn.query('BEGIN')
       .then(() => {
         dbConn.query(sql1, [userId, userId, orderComment])
           .then(res => {
-            const order_id = res.rows[0].id;
-            for (item of items) {
-              const sqlParams = [order_id, item.id, item.description, item.quantity, item.price];
-              dbConn.query(sql2, sqlParams)
-                .then(() => {
-
-                });
-              continue;
+            const orderId = res.rows[0].id;
+            const promisedArray = [];
+            for (const item of items) {
+              const sqlParams = [orderId, item.id, item.description, item.quantity, item.price];
+              promisedArray.push(dbConn.query(sql2, sqlParams));
             }
-            dbConn.query('COMMIT')
-              .then(() => { resolve(order_id); });
+            Promise.all(promisedArray)
+              .then(() => {
+                dbConn.query('COMMIT')
+                  .then(() => {
+                    resolve(orderId);
+                  });
+              });
           });
       })
       .catch(e => {
@@ -174,10 +174,9 @@ const createNewCart = (item, userId) => {
 
   const sql2 = `INSERT INTO order_details (order_id, item_id, description, quantity, price)
           SELECT $1, $2, items.description, $3, items.price
-          FROM items WHERE items.id = $4;`
+          FROM items WHERE items.id = $4;`;
 
   return new Promise((resolve, reject) => {
-    //this code taken from https://node-postgres.com/features/transactions
     dbConn.query('BEGIN')
       .then(() => {
         dbConn.query(sql1, [userId, userId])
@@ -186,7 +185,9 @@ const createNewCart = (item, userId) => {
             dbConn.query(sql2, sqlParams)
               .then(() => {
                 dbConn.query('COMMIT')
-                  .then(() => { resolve(true); });
+                  .then(() => {
+                    resolve(true);
+                  });
               });
           });
       })
@@ -209,7 +210,7 @@ const addItemToCart = (item, userId) => {
   //this is assuming that there are only ever on open cart for this user. this should always be correct unless something went wrong.
   const sql = `INSERT INTO order_details (order_id, item_id, quantity, description, price)
   SELECT $1, $2, $3, items.description, items.price
-  FROM items WHERE items.id = $4 RETURNING *;`
+  FROM items WHERE items.id = $4 RETURNING *;`;
 
   //get order id of open cart.
   return getOrderHeaderByUserId(userId)
@@ -217,9 +218,11 @@ const addItemToCart = (item, userId) => {
       const sqlParams = [header.id, item.id, item.quantity, item.id];
       dbConn.query(sql, sqlParams)
         .then(res => res.rows);
+    })
+    .catch(e => {
+      throw e;
     });
-  //.catch(e => {throw e;});
-}
+};
 /**
  * Get the current cart information of the logged on user
  * @param  userId This userd id of the loged on user
@@ -236,11 +239,13 @@ const getUserCart = (userId) => {
         getOrderDetails(header.id)
           .then(details => {
             if (!details) {
-              resolve({})
+              resolve({});
             }
-            //console.log("returning header, details");//, header, details);
             resolve({ header, details });
           });
+      })
+      .catch(e => {
+        reject(e.message);
       });
   });
 };
@@ -260,11 +265,13 @@ const getUserCartByOrderId = (orderId) => {
         getOrderDetails(header.id)
           .then(details => {
             if (!details) {
-              resolve({})
+              resolve({});
             }
-            //console.log("returning header, details", header, details);
             resolve({ header, details });
           });
+      })
+      .catch(e => {
+        reject(e.message);
       });
   });
 };
@@ -297,6 +304,9 @@ const addToCart = (item, userId) => {
                 });
             });
         }
+      })
+      .catch(e => {
+        reject(e.message);
       });
   });
 };
@@ -317,6 +327,9 @@ const createOrder = (items, userId, orderComment) => {
           .then(cartData => {
             resolve(cartData);
           });
+      })
+      .catch(e => {
+        reject(e.message);
       });
   });
 };
@@ -333,4 +346,4 @@ module.exports = {
   addToCart,
   createOrder,
   setOrderCompleted
-}
+};

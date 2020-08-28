@@ -1,5 +1,5 @@
-$(document).ready(function () {
-  $(window).scroll(function () {
+$(document).ready(function() {
+  $(window).scroll(function() {
     if ($(this).scrollTop() > 300) {
       $("#scroll-btn").addClass("show");
       $("#scroll-btn").fadeIn();
@@ -7,9 +7,9 @@ $(document).ready(function () {
       $("#scroll-btn").fadeOut();
     }
   });
-  $("#scroll-btn").on("click", function (event) {
+  $("#scroll-btn").on("click", function(event) {
     event.preventDefault();
-    $("html, body").animate({ scrollTop: 0 }, 300, function () {
+    $("html, body").animate({ scrollTop: 0 }, 300, function() {
       $("#ModalCart").modal();
     });
   });

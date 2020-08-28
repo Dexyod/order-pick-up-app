@@ -12,11 +12,7 @@ const {
 } = require('../public/scripts/twilio');
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcrypt');
-const constants = require("../constants/constants");
 const dbHelper = require("../helpers/dbHelper.js");
-const { getUserHistory } = require('../helpers/dbHelper.js');
-
 
 
 module.exports = (db) => {
@@ -35,7 +31,7 @@ module.exports = (db) => {
     }
     dbHelper.getUserCart(req.session.userId)
       .then(data => {
-        res.status(200).send(data)
+        res.status(200).send(data);
       })
       .catch(e => res.status(500).send({ error: e.message }));
   });
@@ -53,9 +49,7 @@ module.exports = (db) => {
   router.post("/sms", (req, res) => {
     const params = req.body.Body.split(' ');
     const [action, username, order_id, customerPhone, time] = params;
-    // console.log(res);
     if (action === 'ETA') {
-      console.log(time);
       messageCustomer(username, order_id, customerPhone, time);
     } else if (action === 'Complete') {
       orderComplete(username, order_id, customerPhone);
@@ -82,7 +76,6 @@ module.exports = (db) => {
       .then((data) => {
         messageRestaurant(data);
         res.status(201).send(data);
-
       })
       .catch(e => res.status(500).send({ error: e.message }));
   });

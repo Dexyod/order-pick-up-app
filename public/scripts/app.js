@@ -43,7 +43,7 @@ $(() => {
     `);
   };
 
-  $('#cart-checkout').on('click', function (event) {
+  $('#cart-checkout').on('click', function(event) {
     const cart = JSON.parse(localStorage.getItem('cart'));
     let formData = { items: [] };
     for (const key in cart) {
@@ -55,7 +55,7 @@ $(() => {
       method: 'POST',
       data: formData
     })
-      .then(function (response) {
+      .then(function(response) {
         $('#ModalCart').modal('toggle');
         localStorage.removeItem("cart");
         updateCartNumber();
@@ -67,10 +67,10 @@ $(() => {
         validate('Please login to checkout!');
         $(".error").slideDown("slow");
         $(".error").addClass("show");
-      })
+      });
   });
 
-  $('#cartItems').on('click', '#remove-item-button', function (event) {
+  $('#cartItems').on('click', '#remove-item-button', function(event) {
     let cart = JSON.parse(localStorage.getItem('cart'));
     delete cart[this.name];
     localStorage.setItem('cart', JSON.stringify(cart));
@@ -78,7 +78,7 @@ $(() => {
     updateCartItems();
   });
 
-  $('#cartItems').on('click', '#increment-quantity', function (event) {
+  $('#cartItems').on('click', '#increment-quantity', function(event) {
     let cart = JSON.parse(localStorage.getItem('cart'));
     if (cart[$(this).attr('name')].quantity <= 50) {
       cart[$(this).attr('name')].quantity++;
@@ -88,7 +88,7 @@ $(() => {
     updateCartItems();
   });
 
-  $('#cartItems').on('click', '#decrement-quantity', function (event) {
+  $('#cartItems').on('click', '#decrement-quantity', function(event) {
     let cart = JSON.parse(localStorage.getItem('cart'));
     if (cart[$(this).attr('name')].quantity > 1) {
       cart[$(this).attr('name')].quantity--;
@@ -98,7 +98,7 @@ $(() => {
     updateCartItems();
   });
 
-  $('#menu-container').on('click', '#add-to-cart-button', function (event) {
+  $('#menu-container').on('click', '#add-to-cart-button', function(event) {
     let cart = {};
     if (localStorage.getItem('cart')) {
       cart = JSON.parse(localStorage.getItem('cart'));
@@ -114,18 +114,18 @@ $(() => {
     updateCartItems();
   });
 
-  $('#register-form').submit(function (event) {
+  $('#register-form').submit(function(event) {
     event.preventDefault();
     const formData = $(this).serialize();
     $.ajax('/api/users/register', {
       method: 'POST',
       data: formData
     })
-      .then(function (response) {
+      .then(function(response) {
         console.log(response);
         $('#ModalRegister').modal('toggle');
         $("#login-options").load(location.href + " #login-options");
-        $('#register-form').each(function () {
+        $('#register-form').each(function() {
           this.reset();
         });
       })
@@ -136,18 +136,18 @@ $(() => {
         $(".error").addClass("show");
       });
   });
-  $('#login-form').submit(function (event) {
+  $('#login-form').submit(function(event) {
     event.preventDefault();
     const formData = $(this).serialize();
     $.ajax('/api/users/login', {
       method: 'POST',
       data: formData
     })
-      .then(function (response) {
+      .then(function(response) {
         console.log(response);
         $('#ModalLogin').modal('toggle');
         $("#login-options").load(location.href + " #login-options");
-        $('#login-form').each(function () {
+        $('#login-form').each(function() {
           this.reset();
           getUserHistory();
         });
@@ -160,12 +160,12 @@ $(() => {
       });
   });
 
-  $('#login-options').on('click', '#logout', function (event) {
+  $('#login-options').on('click', '#logout', function(event) {
     event.preventDefault();
     $.ajax('/api/users/logout', {
       method: 'POST'
     })
-      .then(function (response) {
+      .then(function(response) {
         console.log(response);
         $("#login-options").load(location.href + " #login-options");
         $('#history-container').empty();
@@ -176,24 +176,24 @@ $(() => {
   $.ajax('/api/items/', {
     method: 'GET'
   })
-    .then(function (response) {
+    .then(function(response) {
       response.forEach((item) => {
         menuItems[item.id] = item;
         switch (item.category) {
-          case 'Starter':
-            $('#starter-container').prepend(createMenuItem(item));
-            break;
-          case 'Main':
-            $('#main-container').prepend(createMenuItem(item));
-            break;
-          case 'Desert':
-            $('#desert-container').prepend(createMenuItem(item));
-            break;
-          case 'Drink':
-            $('#drink-container').prepend(createMenuItem(item));
-            break;
-          default:
-            break;
+        case 'Starter':
+          $('#starter-container').prepend(createMenuItem(item));
+          break;
+        case 'Main':
+          $('#main-container').prepend(createMenuItem(item));
+          break;
+        case 'Desert':
+          $('#desert-container').prepend(createMenuItem(item));
+          break;
+        case 'Drink':
+          $('#drink-container').prepend(createMenuItem(item));
+          break;
+        default:
+          break;
         }
       });
     })
@@ -257,7 +257,7 @@ $(() => {
     $.ajax('/api/items/user-history', {
       method: 'GET'
     })
-      .then(function (response) {
+      .then(function(response) {
         response.forEach((item) => {
 
           item.order_date = item.order_date.slice(0, 10);

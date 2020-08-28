@@ -38,7 +38,8 @@ const failedMessage = () => {
       to: `+1${restaurantPhone}`
     })
     .catch((error) => console.log(error.message));
-}
+};
+
 const messageRestaurant = (orderData) => {
   const { header, details } = orderData;
 
