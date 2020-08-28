@@ -1,5 +1,8 @@
 $(() => {
   const menuItems = {};
+
+  // template for menu items
+
   const createMenuItem = (item) => {
     return (`
     <div class="card card-body d-flex align-items-center">
@@ -18,6 +21,8 @@ $(() => {
     </div>
     `);
   };
+
+  // template for cart items
 
   const createCartItem = (item) => {
     return (`
@@ -42,6 +47,8 @@ $(() => {
     </tr>
     `);
   };
+
+  // handles all the checkout logic
 
   $('#cart-checkout').on('click', function(event) {
     const cart = JSON.parse(localStorage.getItem('cart'));
@@ -70,6 +77,8 @@ $(() => {
       });
   });
 
+  // removes items from localStorage
+
   $('#cartItems').on('click', '#remove-item-button', function(event) {
     let cart = JSON.parse(localStorage.getItem('cart'));
     delete cart[this.name];
@@ -77,6 +86,8 @@ $(() => {
     updateCartNumber();
     updateCartItems();
   });
+
+  // handles the cart incrementors being clicked
 
   $('#cartItems').on('click', '#increment-quantity', function(event) {
     let cart = JSON.parse(localStorage.getItem('cart'));
@@ -97,6 +108,8 @@ $(() => {
     updateCartNumber();
     updateCartItems();
   });
+
+  // adds items to the cart and updates everything
 
   $('#menu-container').on('click', '#add-to-cart-button', function(event) {
     let cart = {};
@@ -136,6 +149,9 @@ $(() => {
         $(".error").addClass("show");
       });
   });
+
+  // login logic
+
   $('#login-form').submit(function(event) {
     event.preventDefault();
     const formData = $(this).serialize();
@@ -160,6 +176,8 @@ $(() => {
       });
   });
 
+  // logout logic
+
   $('#login-options').on('click', '#logout', function(event) {
     event.preventDefault();
     $.ajax('/api/users/logout', {
@@ -172,6 +190,8 @@ $(() => {
       })
       .catch((err) => console.log(err));
   });
+
+  // initial fetch of all the menu items in the database
 
   $.ajax('/api/items/', {
     method: 'GET'
@@ -199,6 +219,9 @@ $(() => {
     })
     .catch((err) => console.log(err));
 
+
+  // Updates the number beside the cart in the UI
+
   const updateCartNumber = () => {
     if (localStorage.getItem('cart')) {
       const cart = JSON.parse(localStorage.getItem('cart'));
@@ -211,6 +234,8 @@ $(() => {
       $(".cart-number").html("0");
     }
   };
+
+  // refreshes the items in the cart to represent recent changes
 
   const updateCartItems = () => {
     let subTotal = 0;
@@ -232,7 +257,9 @@ $(() => {
       $("#cart-total").html(`$${(subTotal + taxes).toFixed(2)}`);
     }
   };
-  // History menu item
+
+  // template for history menu items
+
   const createHistoryMenuItem = (item) => {
     return (`
     <div class="card card-body d-flex align-items-center">
@@ -252,6 +279,8 @@ $(() => {
     </div>
     `);
   };
+
+  // fetches the logged in users history
 
   const getUserHistory = () => {
     $.ajax('/api/items/user-history', {
